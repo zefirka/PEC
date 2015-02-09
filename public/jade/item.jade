@@ -1,0 +1,8 @@
+li.gen-item(type="{{field.type}}" ng-class="{'disabled' : field.disabled, 'plural'  : field.quantity > 0 }" id="{{field.id}}" plural="{{field.quantity}}")
+	span.ball.quantity(ng-if="field.quantitable" ng-click="changeQuantity(field)")
+	span.ball.add(ng-if="field.repeat" ng-click="copy(field, index)")
+	span.remove(ng-click="remove(field, index)" ng-class="{'inactive' : field.disabled }")
+	
+	a(ng-click="switchField(field)") {{field.name}}
+	div.template(ng-include="field.form" ng-hide="field.hidden")
+		

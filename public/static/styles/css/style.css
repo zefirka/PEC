@@ -1,0 +1,233 @@
+body{
+	text-align: center;
+	background-color: #FBEDF1;
+}
+ul{
+	list-style: none !important;
+	list-style-image: none !important;
+}
+
+li a{
+	color: black;
+}
+
+.wraper{
+	border-right: solid 10px #F7DCE4;
+	border-left: solid 10px #F7DCE4;
+	display: inline-block;
+	text-align: left;
+	background-color: white;
+	padding: 0 20px;
+}
+
+h1{
+	text-align: center;
+}
+
+table.main{
+	vertical-align: top;
+	width: 1360px;
+}
+
+.gen-demo{
+	vertical-align: top;
+	padding: 5px;
+	width: 960px;
+}
+
+.gen-content{
+	vertical-align: top;
+	width: 400px;
+	padding: 10px;
+}
+
+th{
+	text-align: center;
+}
+
+.gen-sanitize{
+	padding: 15px;
+}
+
+
+
+.gen-content section{
+	margin-bottom: 20px;
+}
+
+textarea{
+	font-family: monospace;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.gen-data{
+	padding: 0 15px;
+}
+
+.gen-list{
+	min-width: 300px;
+	list-style: none;
+	padding: 0;
+	margin: 0 15px;
+}
+
+.gen-list li{
+	cursor: pointer;
+	padding: 5px 10px;
+	background-color: rgb(138, 179, 230);
+	margin-bottom: 5px;
+	border-radius: 5px;
+	font-size: 110%;
+	padding-left: 15px;
+	position: relative;
+}
+
+hr{
+	border: none;
+	width: 100%;
+	margin: 15px 0;
+	border-bottom: solid 1px #F7DCE4;
+}
+
+.gen-list li.dirty:before{
+	content: "*";
+	color: rgb(246, 131, 168);
+	position: absolute;
+	left: -15px;
+	top: 8px;
+	font-size: 110%;
+}
+
+
+
+.gen-list li[type='s']{
+	background-color: #F7DCE4;
+}
+
+.gen-list li[type='t']{
+	background-color: rgb(198, 230, 255);
+}
+
+
+.gen-list li[type='g']{
+	background-color: rgb(230, 197, 138);
+}
+
+.gen-list li[type='r']{
+	background-color:rgb(180, 198, 157);
+}
+
+
+
+.red-ball .remove,
+.gen-item .remove{
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	background: rgb(238, 74, 74);
+	border-radius: 50%;
+}
+
+.red-ball .remove{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 18px;
+	height: 18px;
+}
+
+.red-ball .remove.inactive,
+.gen-item .remove.inactive{
+	background: green;
+}
+
+.red-ball .remove.inactive,
+.gen-item .remove.inactive:after{
+	content: "⊕" !important;
+}
+
+.red-ball .remove:after,
+.gen-item .remove:after{
+	color: white;
+	content: "⊗";
+	position: relative;
+	top: 0px;
+	left: 2px;
+	font-size: 19px;
+	line-height: 20px;	
+}
+
+.red-ball .remove:after{
+	font-size: 16px;
+	top: -1px;
+}
+
+.gen-item .ball{
+	top: 5px;
+	position: absolute;
+	right: 40px;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	background: white;
+	border-radius: 50%;
+}
+
+.gen-item .add:after{
+	color: black;
+	content: "⇩";
+	position: relative;
+	top: 1px;
+	left: 2px;
+	font-size: 19px;
+	line-height: 20px;
+	font-weight: bold;
+}
+
+.gen-item .quantity:after{
+	color: black;
+	content: "1";
+	position: relative;
+	top: -1px;
+	left: 6px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: bold;	
+}
+
+.gen-item .plural:after{
+	content: "∞";
+	top: -1px;
+	left: 4px;
+	font-size: 17px;
+}
+
+.center{
+	text-align: center;
+}
+
+.disabled{
+	background-color: rgb(188, 188, 188) !important;
+}
+
+.disabled .ball{
+	display: none;
+}
+
+ul .params{
+	padding: 15px 0;
+}
+
+ul .params input{
+	margin-bottom: 5px;
+}
+
+.edit-mark{
+	display: inline-block;
+	color: rgb(246, 131, 168);
+	font-size: 110%;
+}

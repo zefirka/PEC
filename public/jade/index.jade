@@ -1,0 +1,103 @@
+- var language = locals.language;
+- var device = locals.userAgent;
+- var classes = [device.Mobile ? 'device-mobile' : '', device.Android ? 'device-android' : '',  device.iOS ? 'device-ios' : '']
+
+doctype html
+html(lang=language, ng-app='pudra')
+	head
+	include ./head.jade
+	body(class=classes, sizematch, ng-controller="mainCtrl")
+		preloader(class="root", speed="700", timeout="1000", init='true')
+		.wrapper.notready
+			h1 Конструктор рассылки для Pudra
+			hr
+			
+			table.main(main-table="true")
+				tr
+					td(colspan="2")
+						.pannel
+							a.btn.btn-primary(ng-click='compile()') Скомпилировать
+							a.btn.btn-warning(ng-click="loadFile()") Загрузить
+							a.btn.btn-success(ng-click="saveFile()") Сохранить
+				tr
+					td.center
+						h2 Настройки
+					td.center(width="{{tablewidth}}")
+						h2 Демо
+				tr
+					td.gen-content
+						section
+							h3(style='margin-top:0px;') Структура письма
+
+							ul.gen-list
+								li(type='s' class="gen-item") Шапка
+
+							list(fields="fields")
+
+							ul.gen-list
+								li(type='s' class="gen-item") Социальные сети
+								li(type='s' class="gen-item") Футер
+
+							.gen-data
+								div
+									span.edit-mark * - отредактированные элементы
+								div
+									span.red-ball
+										span.remove
+										span - удалить элемент из структуры
+								div
+									span.red-ball
+										span.remove.inactive
+										span - вернуть элемент в структуру
+								div
+									span.ball.add	- добавить
+						section
+							h3 Переменные
+							.gen-data
+								form.form-horizontal#vars
+									.form-group
+										label.col-sm-2.control-label Телефон
+										.col-sm-10
+											input(type='text' name="telephone" class="form-control" ng-model="phonenum" value="{{phonenum}}")
+									.form-group
+										label.col-sm-2.control-label Фон
+										.col-sm-10
+											select.form-control( type='text' ng-model="pattern")
+												option(value='http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png') Обычный
+												option(value="http://pudra.ru/skins/pudra/customer/static/img/backgrounds/Pudra-Snow.png") Снежинки
+												option(value='http://pudra.ru/skins/pudra/mail/email_letter/img/textures/stvalpattern.png') 14-февраля
+												option(value='http://pudra.ru/images/detailed/73/23-february-pattern.png') Камуфляж
+							h3 Advanced
+								.gen-data
+									form.form-horizontal#vars
+										.form-group
+											label.col-sm-2.control-label Высота блока товара
+											.col-sm-10
+												input.form-control(type='text' ng-model="settings.height" value="{{settings.heigth}}")
+												
+							h3 Responsive test
+								.gen-data
+									form.form-horizontal#responsive
+										.form-group
+											label.col-sm-2.control-label Ширина
+											.col-sm-10
+												select.form-control( ng-model='tablewidth' value="{{tablewidth}}")
+													option 960
+													option 768
+													option 480
+													option 320
+													option 1024
+
+					td.gen-demo(width="{{tablewidth}}" letter)
+						include ./table.jade
+
+.overlap-manager.closed(ngpopup style="display:none")
+	.overlay
+	.container
+		p {{message}}
+		div(ng-if="resulting")
+			textarea.form-control(value="{{resulting}}" ng-model="resulting" style="resize:vertical;" rows="12")
+		
+		a(ng-click="collapse()" class="btn btn-primary") Закрыть
+		
+.builder(style='display:none')

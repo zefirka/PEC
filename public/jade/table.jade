@@ -1,0 +1,46 @@
+table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir="ltr" style="font-size: 16px; width: 100%; background-color: #FBEDF1;" )
+	tbody
+		tr
+			td( width="100%" cellpadding="0" cellspacing="0" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-rigth: 0px; margin-top:0px; margin-bottom: 0px; margin-left: 0px; margin-rigth:0px; background-color:#FBEDF1; background-image: url('{{pattern}}'); font-family: Arial, serif;" background="{{pattern}}")
+			
+				// Шапка
+				
+				table( align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0px; width: 100%;")
+					tbody
+						tr
+							td(align="center" valign="middle" style="width: 100%; padding-left: 15px; padding-rigth: 15px; text-align: center; padding-top: 20px; padding-bottom: 20px;")
+								a(href="http://pudra.ru" style="text-decoration: none;") 
+									img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/logo.png" alt="Pudra.ru" style="display: inline-block;")
+								br
+								a(href="tel:88007751060" style="text-decoration: none;")
+									span(style="padding-top: 10px; display: inline-block; color: #d6607e; font-size: 22px;" alt="8-800-775-1060") 
+										span {{phonenum}}
+
+				table( border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px; height: 42px;" )
+					tbody
+						tr
+							td(height="42" align="center" width="100%" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/bar-texture.png');")
+								table(border="0" cellpadding="0" cellspacing="0" style="max-width: 780px; text-decoration: none; height: 40px; width: 100%;")
+									tbody
+										tr
+											td(align="center" height="40" border="0" cellpadding="0" cellspacing="0" style="max-width: 780px; padding: 0 10px;")
+												a(href="http://pudra.ru/brands.html" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_01.png" height="36" alt="Бренды" border="0" style="display: inline-block;")
+												a(href="http://pudra.ru/perfumery" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_02.png" height="36" alt="Парфюмерия" border="0" style="display: inline-block;")
+												a(href="http://pudra.ru/makeup" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_03.png" height="36" alt="Макияж" border="0" style="display: inline-block;")
+												a(href="http://pudra.ru/skin-care" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_04.png" height="36" alt="Уход за кожей" border="0" style="display: inline-block;")
+												a(href="http://pudra.ru/hair-care" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_05.png" height="36" alt="Уход за волосами" border="0" style="display: inline-block;")
+												a( href="http://pudra.ru/search?pudra_sales=Y" target="blank" border="0" style="text-decoration: none;")
+													img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/menu/menu_06.png" height="36" alt="Подарки" border="0" style="display: inline-block;")
+
+								table(border="0" cellpadding="0" cellspacing="0" style="width: 100%;")
+									tbody
+										tr
+											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
+							
+				span.to-remove(ng-repeat="(index, field) in fields")
+					span.to-remove(ng-include="field.template")

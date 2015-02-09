@@ -1,0 +1,18 @@
+# Sublime Text projects
+*sublime*
+
+# Node modules
+node_modules/*
+node_modules
+
+# Local documents
+local_docs/*
+local_docs
+
+# NetBeans Projects
+nbprojects/*
+nbprojects
+
+# Vendor libraries
+public/libs/*
+public/libs/
