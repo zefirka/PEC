@@ -71,9 +71,14 @@ html(lang=language, ng-app='pudra')
 								.gen-data
 									form.form-horizontal#vars
 										.form-group
+											label.col-sm-2.control-label Автосохранение
+											.col-sm-10(style="text-align:center;")
+												input(type='checkbox' ng-model="settings.autosave" checked="{{settings.autosave}}" ng-change="switchAutosave()")
+										.form-group
 											label.col-sm-2.control-label Высота блока товара
 											.col-sm-10
 												input.form-control(type='text' ng-model="settings.height" value="{{settings.heigth}}")
+												
 												
 							h3 Responsive test
 								.gen-data

@@ -98,12 +98,12 @@ app.post("/api?*", function (req, res, next){
 		console.log("Writing file: " + config.controllers + "files/fields.json");
 
 		var fields = req.body.fields;
-		console.log(fields);
 		fs.writeFile(config.controllers + "files/fields.json", JSON.stringify(fields), function(err) {
 		    if(err) {
 		        console.log(err);
 		    } else {
 		        res.send({
+		        	sielent: req.body.sielent || false,
 		        	message: "Файл сохранен успешно."
 		        });
 		        next();

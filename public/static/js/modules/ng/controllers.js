@@ -37,13 +37,10 @@ function map(data){
 }
 
 pudra.controllers.mainCtrl = function($scope){
-	var $timeout = pudra.inject('$timeout');
+	var $interval = pudra.inject('$interval'),
+		timer;
 
-	debugger;
-	
-	// setInterval(function(){
-
-	// })
+	// Автосохранение
 
 	$scope.tablewidth = 480;
 	$scope.phonenum = "8-800-775-1060";
@@ -51,13 +48,17 @@ pudra.controllers.mainCtrl = function($scope){
 
 	$scope.settings = {
 		height: "390px",
+		autosave : true
 	}
 
 	pudra.api.http.get('fields').map(map).watch().bindTo($scope, 'fields');
 	
 
-	$scope.saveFile = function(){
-		pudra.api.http.post('fields:save', {fields: $scope.fields});
+	$scope.saveFile = function(sielent){
+		pudra.api.http.post('fields:save', {
+			sielent: sielent,
+			fields: $scope.fields
+		});
 	}
 
 	$scope.loadFile = function(){
@@ -124,5 +125,18 @@ pudra.controllers.mainCtrl = function($scope){
 			}			
 		}
 	}
+
+	$scope.switchAutosave = function(){
+		if($scope.settings.autosave){
+			timer = $interval(function(){
+				$scope.saveFile(true);
+				console.log('Автосохранение');
+			}, 6000);
+		}else{
+			$interval.cancel(timer);
+		}
+	}
+
+	$scope.switchAutosave();
 
 }

@@ -9,7 +9,11 @@ pudra.directives.ngpopup = function(){
 				var $timeout = pudra.inject('$timeout'),
 					popup = $(element);
 
-				pudra.api.posts.listen(function(response){
+				pudra.api.sielents = pudra.api.posts.filter(function(response){
+					return !response.data.sielent
+				})
+
+				pudra.api.sielents.listen(function(response){
 					scope.resulting = response.resulting || false;
 					$("body main").addClass("distant");                   
 					$timeout(function(){
@@ -61,14 +65,15 @@ pudra.directives.letter = function(){
 					sanitize(ft);
 					$(".ng-scope", ft).removeClass("ng-scope");
 					
-					var res = ft
+					var res = $(".builder")
 						.html()
 						.replace('class=""', '')
 						.replace(/\<\!\-\- end ngRepeat\: \(index\, field\) in fields \-\-\>/g, '')
 						.replace(/\<\!\-\- ngInclude\: field\.template \-\-\>/g, '')
 
-					pudra.api.posts.fire({
+					pudra.api.sielents.fire({
 						resulting: res,
+						data : { sielent: false },
 						message: 'На, полуйча браток, братишка'
 					})
 

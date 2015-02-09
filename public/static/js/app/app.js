@@ -179,19 +179,28 @@ function map(data){
 }
 
 pudra.controllers.mainCtrl = function($scope){
+	var $interval = pudra.inject('$interval'),
+		timer;
+
+	// Автосохранение
+
 	$scope.tablewidth = 480;
 	$scope.phonenum = "8-800-775-1060";
 	$scope.pattern = "http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png";
 
 	$scope.settings = {
 		height: "390px",
+		autosave : true
 	}
 
 	pudra.api.http.get('fields').map(map).watch().bindTo($scope, 'fields');
 	
 
-	$scope.saveFile = function(){
-		pudra.api.http.post('fields:save', {fields: $scope.fields});
+	$scope.saveFile = function(sielent){
+		pudra.api.http.post('fields:save', {
+			sielent: sielent,
+			fields: $scope.fields
+		});
 	}
 
 	$scope.loadFile = function(){
@@ -259,6 +268,19 @@ pudra.controllers.mainCtrl = function($scope){
 		}
 	}
 
+	$scope.switchAutosave = function(){
+		if($scope.settings.autosave){
+			timer = $interval(function(){
+				$scope.saveFile(true);
+				console.log('Автосохранение');
+			}, 6000);
+		}else{
+			$interval.cancel(timer);
+		}
+	}
+
+	$scope.switchAutosave();
+
 }
 
 /* Thutaq Directives */
@@ -272,7 +294,11 @@ pudra.directives.ngpopup = function(){
 				var $timeout = pudra.inject('$timeout'),
 					popup = $(element);
 
-				pudra.api.posts.listen(function(response){
+				pudra.api.sielents = pudra.api.posts.filter(function(response){
+					return !response.data.sielent
+				})
+
+				pudra.api.sielents.listen(function(response){
 					scope.resulting = response.resulting || false;
 					$("body main").addClass("distant");                   
 					$timeout(function(){
@@ -324,14 +350,15 @@ pudra.directives.letter = function(){
 					sanitize(ft);
 					$(".ng-scope", ft).removeClass("ng-scope");
 					
-					var res = ft
+					var res = $(".builder")
 						.html()
 						.replace('class=""', '')
 						.replace(/\<\!\-\- end ngRepeat\: \(index\, field\) in fields \-\-\>/g, '')
 						.replace(/\<\!\-\- ngInclude\: field\.template \-\-\>/g, '')
 
-					pudra.api.posts.fire({
+					pudra.api.sielents.fire({
 						resulting: res,
+						data : { sielent: false },
 						message: 'На, полуйча браток, братишка'
 					})
 
