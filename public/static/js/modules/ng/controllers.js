@@ -40,9 +40,7 @@ pudra.controllers.mainCtrl = function($scope){
 	var $interval = pudra.inject('$interval'),
 		timer;
 
-	// Автосохранение
-
-	$scope.tablewidth = 480;
+	$scope.tablewidth = 960;
 	$scope.phonenum = "8-800-775-1060";
 	$scope.pattern = "http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png";
 
@@ -80,11 +78,8 @@ pudra.controllers.mainCtrl = function($scope){
 		});
 
 		console.log(_.map($scope.fields, function(e, i){
-			return {
-				'index' : e.index,
-				'name' : e.name
-			}
-		}))
+			return Warden.Utils.interpolate('Index : {{index}}, Name: {{name}}', e);
+		}).join('\n'));
 	}
 
 	$scope.changeQuantity = function(field){
@@ -115,6 +110,7 @@ pudra.controllers.mainCtrl = function($scope){
 
 	}
 
+
 	$scope.remove = function(field){
 		if(typeCount(field.type, $scope.fields) == 1){
 			$scope.fields[field.index].disabled = !$scope.fields[field.index].disabled;
@@ -126,12 +122,13 @@ pudra.controllers.mainCtrl = function($scope){
 		}
 	}
 
+	// Автосохранение
 	$scope.switchAutosave = function(){
 		if($scope.settings.autosave){
 			timer = $interval(function(){
 				$scope.saveFile(true);
 				console.log('Автосохранение');
-			}, 6000);
+			}, 60000);
 		}else{
 			$interval.cancel(timer);
 		}

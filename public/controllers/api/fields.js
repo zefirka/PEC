@@ -125,8 +125,29 @@ module.exports = [
 		}
 	},
 
-	{
+	{	
 		index: 5,
+		id: guiid(),
+		type: 'r',
+		template: 'jade/template/ribbon.tpl',
+		form : false,
+		repeat: false,
+		quantitable: false,
+		quantity: 1,
+		disabled: false,
+		name: 'Лента: бестселлеры',
+		data: {
+			plural : {
+				width: 256,
+				height: 35,
+				number : 4,
+				name : 'Лента: бестселлеры'
+			}
+		}
+	},
+
+	{
+		index: 6,
 		id: guiid(),
 		type: 'g',
 		template: 'jade/template/table.tpl',

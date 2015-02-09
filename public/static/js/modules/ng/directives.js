@@ -43,6 +43,9 @@ pudra.directives.letter = function(){
 				scope.compile = function(){
 					$(".builder").append($(element).html());
 					var ft = $(".builder").children();
+
+					$(".remove-childs", ft).remove();
+
 					function sanitize(area){
 						while(area.find(".to-remove").length){
 
@@ -65,9 +68,14 @@ pudra.directives.letter = function(){
 					sanitize(ft);
 					$(".ng-scope", ft).removeClass("ng-scope");
 					
+					$("[ng-src]", $(".builder")).each(function(){
+						$(this).removeAttr("ng-src");
+					});
+
 					var res = $(".builder")
 						.html()
-						.replace('class=""', '')
+						.replace(/class\=\"\"/g, '')
+						.replace(/class\=\"ng-binding\"/g, '')
 						.replace(/\<\!\-\- end ngRepeat\: \(index\, field\) in fields \-\-\>/g, '')
 						.replace(/\<\!\-\- ngInclude\: field\.template \-\-\>/g, '')
 

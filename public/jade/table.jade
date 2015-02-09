@@ -43,4 +43,4 @@ table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir
 											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
 							
 				span.to-remove(ng-repeat="(index, field) in fields")
-					span.to-remove(ng-include="field.template")
+					span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : fields.disabled}" ng-hide="field.disabled")
