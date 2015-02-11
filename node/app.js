@@ -79,7 +79,10 @@ app.get('/api?*', function (req, res, next) {
 			if(err){
 				console.error(err)
 			}else{
-				res.send(JSON.parse(val));
+				res.send({
+					type: 'api',
+					data : JSON.parse(val)
+				});
 				next();	
 			}			
 		});
@@ -87,6 +90,15 @@ app.get('/api?*', function (req, res, next) {
 		res.send(require(config.controllers + "api/" + namespace + ".js"));
 		next();
 	}	
+});
+
+app.get('/searc*', function (req, res, next) {
+	res.send({
+		type: 'search',
+		sielent : true,
+		results: ['alpha', 'beta', 'gamma']
+	});
+	next();
 });
 
 app.post("/api?*", function (req, res, next){

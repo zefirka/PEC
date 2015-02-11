@@ -111,7 +111,9 @@ pudra.directives.preloader = function(){
 				
 				if(attr.init){
 					pudra.api.getsBefore.listen(function(e){
-						$(element).fadeIn(100);
+						if(!e.sielent){
+							$(element).fadeIn(100);
+						}
 					});
 				}
 

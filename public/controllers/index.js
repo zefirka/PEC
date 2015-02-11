@@ -15,6 +15,7 @@ var scripts = [
 		scSrc + "jquery/dist/jquery.min.js",
 		scSrc + "jquery/dist/jquery-ui.min.js",
 		scSrc + 'warden/warden.js',
+		scSrc + 'warden/Bacon.min.js',
 		stScripts + "app/bootstrap.js",
 		stScripts + 'app/app.js',
 		stScripts + 'app/launcher.js'

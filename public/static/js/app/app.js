@@ -55,9 +55,6 @@ pudra.inject = function(module) {
 }
 
 
-
-
-
 pudra.api.cache = (function(){
 	var store = {};
 
@@ -82,7 +79,7 @@ Warden.extend(pudra.api);
 
 pudra.api.gets = Warden.makeStream(function(emit){
 	pudra.api.listen('get:after', function(data){
-		emit(data.data);
+		emit(data);
 	});
 }).bus();
 
@@ -98,6 +95,12 @@ pudra.api.postsBefore = Warden.makeStream(function(emit){
 	pudra.api.listen('post:before', emit);
 }).bus();
 
+pudra.api.getType = function(type){
+	return pudra.api.gets.filter(function(e){
+		return e.useType == type;
+	}).map('.data');
+}
+
 pudra.api.http = (function(){
 	function response(type, response){
 		pudra.api.emit(type + ':after', response);
@@ -105,19 +108,21 @@ pudra.api.http = (function(){
 
 	function request(type){
 		return function (use, data){
-			pudra.api.emit(type + ':before');
+			pudra.api.emit(type + ':before', data);
 
 			if(data && data.cache && pudra.api.cache.cached(use)){
 				response(type, pudra.api.cache.get(use));
 			}else{
-				pudra.inject('$http')[type]('/api?' + use, data).then(function(res){
+				pudra.inject('$http')[type]( use.indexOf('search') >= 0 ? use : '/api?' + use, data).then(function(res){
 					if(data && data.cache){
 						pudra.api.cache(use, res)
 					}
+					res.useType = use;
 					response(type, res);
 
 				}, function(res){
 					res.isError = true;
+					res.useType = type;
 					response(type, res);
 				});
 			}
@@ -191,7 +196,11 @@ pudra.controllers.mainCtrl = function($scope){
 		autosave : true
 	}
 
-	pudra.api.http.get('fields').map(map).watch().bindTo($scope, 'fields');
+	pudra.api.http.get('fields')
+
+	var getFields = pudra.api.getType('fields');
+
+	getFields.map(map).watch().bindTo($scope, 'fields');
 	
 
 	$scope.saveFile = function(sielent){
@@ -275,6 +284,29 @@ pudra.controllers.mainCtrl = function($scope){
 			$interval.cancel(timer);
 		}
 	}
+
+	$scope.query = '';
+	$scope.results = []
+	
+	var searches = pudra.api.getType('search'),
+		searchQueries = $scope.$stream('query')
+			.map('.newValue')
+			.filter(function(e){
+				return e.length > 0
+			})
+			.debounce(500);
+	
+	searchQueries.listen(function(query){
+		pudra.api.http.get('search', {
+			query: query,
+			sielent: true
+		});
+	});		
+		
+	searches
+		.map('.results')
+		.watch()
+		.bindTo($scope, 'results');
 
 	$scope.switchAutosave();
 
@@ -393,7 +425,9 @@ pudra.directives.preloader = function(){
 				
 				if(attr.init){
 					pudra.api.getsBefore.listen(function(e){
-						$(element).fadeIn(100);
+						if(!e.sielent){
+							$(element).fadeIn(100);
+						}
 					});
 				}
 

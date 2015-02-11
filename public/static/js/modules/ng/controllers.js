@@ -49,7 +49,11 @@ pudra.controllers.mainCtrl = function($scope){
 		autosave : true
 	}
 
-	pudra.api.http.get('fields').map(map).watch().bindTo($scope, 'fields');
+	pudra.api.http.get('fields')
+
+	var getFields = pudra.api.getType('fields');
+
+	getFields.map(map).watch().bindTo($scope, 'fields');
 	
 
 	$scope.saveFile = function(sielent){
@@ -133,6 +137,29 @@ pudra.controllers.mainCtrl = function($scope){
 			$interval.cancel(timer);
 		}
 	}
+
+	$scope.query = '';
+	$scope.results = []
+	
+	var searches = pudra.api.getType('search'),
+		searchQueries = $scope.$stream('query')
+			.map('.newValue')
+			.filter(function(e){
+				return e.length > 0
+			})
+			.debounce(500);
+	
+	searchQueries.listen(function(query){
+		pudra.api.http.get('search', {
+			query: query,
+			sielent: true
+		});
+	});		
+		
+	searches
+		.map('.results')
+		.watch()
+		.bindTo($scope, 'results');
 
 	$scope.switchAutosave();
 
