@@ -30,7 +30,7 @@ module.exports = [
 		disabled: false,
 		data: {
 			link: '',
-			url: '',
+			url: 'http://placehold.it/688x280.png',
 			alt: ''
 		}
 	},

@@ -44,3 +44,61 @@ table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir
 							
 				span.to-remove(ng-repeat="(index, field) in fields")
 					span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : fields.disabled}" ng-hide="field.disabled")
+					
+				// Ленточка: Давай общаться 
+				div(style="height: 40px; width: 100%; margin-top: 25px; margin-bottom: 0px; background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/common/ribbon/gray_ribbon_02.png'); text-align: center;")
+					img(vspace="0" hspace="0" ng-src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/headings/heading3.png" width="200" height="36" alt="Давай общаться" style="display: inline-block;")
+				table(border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px; height: 2px;")
+					tbody
+						tr
+							td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
+				table(border="0" cellpadding="0" cellspacing="0" style="width: 100%;")
+					tbody
+						tr
+							td(style="padding-left: 6px; padding-right: 6px; padding-bottom: 6px;" align="center")
+								table(border="0" cellpadding="15" cellspacing="0" style="padding: 6px; width: 100%; max-width: 696px; background: #ffffff;" background-color="#ffffff")
+									tbody
+										tr
+											td(align="center" style="padding-top: 25px; padding-left: 15px; padding-right: 15px; padding-bottom: 5px; width: 100%;")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="http://vk.com/pudraru" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_vk.png")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="https://www.facebook.com/PUDRA" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_fb.png")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="https://www.youtube.com/user/pudraru" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_youtube.png")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="http://instagram.com/pudra_ru" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_instagram.png")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="https://plus.google.com/+pudraru" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_gplus.png")
+												div(style="display: inline-block; margin-right: 25px; margin-bottom: 20px;")
+													a(href="http://www.odnoklassniki.ru/pudraru" style="text-decoration: none;" target="_blank")
+														img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/icons/icon_ok.png")
+								
+									
+								table(border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 696px; height: 2px;")
+									tbody
+										tr
+											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
+				//Футер
+				table(cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;")
+					tbody
+						tr
+							td(style="padding-left: 6px; padding-right: 6px; padding-bottom: 6px;" align="center")
+								table(border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 696px; padding: 6px; background: #F8E3E9;")
+									tbody
+										tr
+											td(align="left" style="width: 100%; padding: 25px; color: #41484a; font-size: 14px;")
+												| <p style="margin-top: 0px;">Чтобы наша рассылка не попала в спам, и ты узнала первой о новых поступлениях, скидках и специальных акциях, пожалуйста, добавь адрес <a style="color: #0084e3;" href="mailto:client@pudra.ru">client@pudra.ru</a> в адресную книгу.</p>
+												| <p>Ты получила это письмо, так как подписалась на рассылку PUDRA на сайте <a style="color: #0084e3;" href="http://pudra.ru">pudra.ru</a>. Чтобы отказаться от рассылки, нажми <a style="color: #0084e3;" href="[[remove]]">сюда</a>.</p>
+												| <p style="margin-bottom: 0px;">Наш почтовый адрес:</p>
+												| <p style="margin-bottom: 0px; margin-top: 0px;">ООО "Пудра", Россия, Москва, Садовническая улица, д.16, стр.1.</p>
+					
+								table(border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 696px; height: 2px;")
+									tbody
+										tr
+											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")

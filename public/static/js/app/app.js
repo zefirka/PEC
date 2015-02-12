@@ -97,8 +97,8 @@ pudra.api.postsBefore = Warden.makeStream(function(emit){
 
 pudra.api.getType = function(type){
 	return pudra.api.gets.filter(function(e){
-		return e.useType == type;
-	}).map('.data');
+		return e.type == type;
+	});
 }
 
 pudra.api.http = (function(){
@@ -117,12 +117,10 @@ pudra.api.http = (function(){
 					if(data && data.cache){
 						pudra.api.cache(use, res)
 					}
-					res.useType = use;
-					response(type, res);
+					response(type, res.data);
 
 				}, function(res){
 					res.isError = true;
-					res.useType = type;
 					response(type, res);
 				});
 			}
@@ -176,6 +174,7 @@ function clean(obj, val){
 }
 
 function map(data){
+	debugger;
 	return _.map(data, function(field, i){
 		field.hidden = true;
 		field.index = i;
@@ -198,7 +197,7 @@ pudra.controllers.mainCtrl = function($scope){
 
 	pudra.api.http.get('fields')
 
-	var getFields = pudra.api.getType('fields');
+	var getFields = pudra.api.getType('load').map('.data')
 
 	getFields.map(map).watch().bindTo($scope, 'fields');
 	
@@ -263,7 +262,7 @@ pudra.controllers.mainCtrl = function($scope){
 
 
 	$scope.remove = function(field){
-		if(typeCount(field.type, $scope.fields) == 1){
+		if(typeCount(field.type, $scope.fields) == 1 || !field.repeat){
 			$scope.fields[field.index].disabled = !$scope.fields[field.index].disabled;
 		}else{
 			$scope.fields.splice(field.index, 1);
@@ -285,28 +284,28 @@ pudra.controllers.mainCtrl = function($scope){
 		}
 	}
 
-	$scope.query = '';
-	$scope.results = []
+	// $scope.query = '';
+	// $scope.results = []
 	
-	var searches = pudra.api.getType('search'),
-		searchQueries = $scope.$stream('query')
-			.map('.newValue')
-			.filter(function(e){
-				return e.length > 0
-			})
-			.debounce(500);
+	// var searches = pudra.api.getType('search'),
+	// 	searchQueries = $scope.$stream('query')
+	// 		.map('.newValue')
+	// 		.filter(function(e){
+	// 			return e.length > 0
+	// 		})
+	// 		.debounce(500);
 	
-	searchQueries.listen(function(query){
-		pudra.api.http.get('search', {
-			query: query,
-			sielent: true
-		});
-	});		
+	// searchQueries.listen(function(query){
+	// 	pudra.api.http.get('search', {
+	// 		query: query,
+	// 		sielent: true
+	// 	});
+	// });		
 		
-	searches
-		.map('.results')
-		.watch()
-		.bindTo($scope, 'results');
+	// searches
+	// 	.map('.results')
+	// 	.watch()
+	// 	.bindTo($scope, 'results');
 
 	$scope.switchAutosave();
 
@@ -315,7 +314,11 @@ pudra.controllers.mainCtrl = function($scope){
 /* Thutaq Directives */
 
 pudra.directives.ngpopup = function(){ 
-
+	function by(prop, val){
+		return function(e){
+			return e[prop] == val;
+		}
+	}
 	return function(){
 		return {
 			restrict: 'A',
@@ -323,8 +326,16 @@ pudra.directives.ngpopup = function(){
 				var $timeout = pudra.inject('$timeout'),
 					popup = $(element);
 
+				$(document).bind('keydown', function(e) {
+					if(e.ctrlKey && (e.which == 83)) {
+						e.preventDefault();
+				    	scope.saveFile();
+						return false;
+					}
+				});
+
 				pudra.api.sielents = pudra.api.posts.filter(function(response){
-					return !response.data.sielent
+					return !response.sielent
 				})
 
 				pudra.api.sielents.listen(function(response){
@@ -333,7 +344,7 @@ pudra.directives.ngpopup = function(){
 					$timeout(function(){
   						popup.show();
   						popup.addClass("open");  
-  						scope.message = response.data.message;
+  						scope.message = response.message;
 					}, 100);
 				});
 
@@ -502,6 +513,7 @@ pudra.directives.sizematch = function(){
 			restrict: 'A',
 			link: function(scope, element, attr){
 				pudra.functional.sizematch.add($(element));;
+
 			}
 		}
 	}

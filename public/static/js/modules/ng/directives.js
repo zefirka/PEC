@@ -1,7 +1,11 @@
 /* Thutaq Directives */
 
 pudra.directives.ngpopup = function(){ 
-
+	function by(prop, val){
+		return function(e){
+			return e[prop] == val;
+		}
+	}
 	return function(){
 		return {
 			restrict: 'A',
@@ -9,8 +13,16 @@ pudra.directives.ngpopup = function(){
 				var $timeout = pudra.inject('$timeout'),
 					popup = $(element);
 
+				$(document).bind('keydown', function(e) {
+					if(e.ctrlKey && (e.which == 83)) {
+						e.preventDefault();
+				    	scope.saveFile();
+						return false;
+					}
+				});
+
 				pudra.api.sielents = pudra.api.posts.filter(function(response){
-					return !response.data.sielent
+					return !response.sielent
 				})
 
 				pudra.api.sielents.listen(function(response){
@@ -19,7 +31,7 @@ pudra.directives.ngpopup = function(){
 					$timeout(function(){
   						popup.show();
   						popup.addClass("open");  
-  						scope.message = response.data.message;
+  						scope.message = response.message;
 					}, 100);
 				});
 
@@ -188,6 +200,7 @@ pudra.directives.sizematch = function(){
 			restrict: 'A',
 			link: function(scope, element, attr){
 				pudra.functional.sizematch.add($(element));;
+
 			}
 		}
 	}

@@ -77,8 +77,8 @@ pudra.api.postsBefore = Warden.makeStream(function(emit){
 
 pudra.api.getType = function(type){
 	return pudra.api.gets.filter(function(e){
-		return e.useType == type;
-	}).map('.data');
+		return e.type == type;
+	});
 }
 
 pudra.api.http = (function(){
@@ -97,12 +97,10 @@ pudra.api.http = (function(){
 					if(data && data.cache){
 						pudra.api.cache(use, res)
 					}
-					res.useType = use;
-					response(type, res);
+					response(type, res.data);
 
 				}, function(res){
 					res.isError = true;
-					res.useType = type;
 					response(type, res);
 				});
 			}

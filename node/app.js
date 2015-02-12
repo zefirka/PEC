@@ -80,14 +80,17 @@ app.get('/api?*', function (req, res, next) {
 				console.error(err)
 			}else{
 				res.send({
-					type: 'api',
+					type: 'load',
 					data : JSON.parse(val)
 				});
 				next();	
 			}			
 		});
 	}else{
-		res.send(require(config.controllers + "api/" + namespace + ".js"));
+		res.send({
+			type: 'load',
+			data: require(config.controllers + "api/" + namespace + ".js")
+		});
 		next();
 	}	
 });
