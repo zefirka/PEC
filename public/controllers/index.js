@@ -1,5 +1,5 @@
 var pkg = require('../../package.json'),
-		config = require('../../node/config/config.js');
+	config = require('../../node/config/config.js');
 
 var scSrc = config.vendor,
 	stSrc = config.static.adr,
@@ -9,11 +9,12 @@ var scSrc = config.vendor,
 
 var scripts = [
 		scSrc + "angular/angular.min.js",
-		'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.7/angular-route.min.js',
-		scSrc + 'angular-sanitize/angular-sanitize.min.js',
-		'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.7/angular-cookies.js',
-		scSrc + "jquery/dist/jquery.min.js",
-		scSrc + "jquery/dist/jquery-ui.min.js",
+		scSrc + "angular/angular-route.min.js",
+		scSrc + "angular/angular-cookies.min.js",
+		scSrc + 'angular-sanitize/angular-sanitize.min.js',		
+		scSrc + "jquery/jquery.min.js",
+		scSrc + "jquery/jquery-ui.min.js",
+		scSrc + "jquery/jquery.sticky.js",
 		scSrc + 'warden/warden.js',
 		scSrc + 'warden/Bacon.min.js',
 		stScripts + "app/bootstrap.js",
@@ -22,7 +23,6 @@ var scripts = [
 	],
 	styles = [
 		stStyles + 'bootstrap.css',
-		//stStyles + 'style.css',
 		stStyles + 'main.css'
 	]
 

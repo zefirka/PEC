@@ -32,7 +32,7 @@ module.exports = {
 	front : 'public/',
 	back : 'node/',
 	
-	static : {
+	'static' : {
 		adr : 'static/',
 		images : 'img/',
 		scripts: "js/" ,

@@ -1,26 +1,17 @@
 {
-  "name": "pudra-email-constructor",
-  "version": "0.0.0",
-  "description": "Responsive email template constructor",
+  "name": "Pudra Newsletter Constructor",
+  "version": "0.1.0",
+  "description": "Pudra Newsletter Constructor",
   "main": "index.html",
   "scripts": {
-    "test": "grunt test"
+    "run": "node node/app.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/d-mkrtchyan-parc/pudra-email-constructor"
   },
-  "keywords": [
-    "adaptive",
-    "responsive",
-    "email",
-    "constructor",
-    "template",
-    "generator",
-    "html"
-  ],
-  "author": "Eik Zeffirsky <wombtromb@gmail.com>",
-  "license": "MIT",
+  "author": "Trdat Mkrtchyan <wombtromb@gmail.com>",
+  "license": "GNU GPL",
   "bugs": {
     "url": "https://github.com/d-mkrtchyan-parc/pudra-email-constructor/issues"
   },

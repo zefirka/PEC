@@ -11,7 +11,6 @@ var express 		= require('express'),
 var fs			= require('fs'),
 	pkg 		= require('../package.json'),
 	config 		= require('./config/config.js'),
-	sitemap 	= require('./config/dependencies.js'),
 	utils 		= require('./utils.js');
 
 for(var i in warden.Utils){
@@ -72,8 +71,6 @@ app.get('/api?*', function (req, res, next) {
 		namespace = originalUrl.split('?').pop(),
 		data;
 
-
-
 	if(namespace.indexOf("load")>=0){
 		fs.readFile(config.controllers + "files/" + namespace.split(':')[0] + ".json", {encoding: 'utf-8'}, function(err, val){ 
 			if(err){
@@ -99,7 +96,7 @@ app.get('/searc*', function (req, res, next) {
 	res.send({
 		type: 'search',
 		sielent : true,
-		results: ['alpha', 'beta', 'gamma']
+		results: ['alpha', 'beta', 'gamma'] //test
 	});
 	next();
 });
@@ -136,22 +133,12 @@ app.get('/*.tpl', function (req, res, next) {
 		data;
 	
 	name = utils.retrive(url, name, config.tplEngine);
-	model = {};
-	
-	try{
-		model = require(config.controllers + name + ".js");
-	}catch(err){
-		resolveName = utils.resolveUrl(name.split('/').pop(), sitemap, true) || 'core';
-		model = require(config.controllers + resolveName + ".js");
-	}
-	
-	data = utils.extend({}, config, model);
-	
+
 	fs.stat(config.root + config.views + name + '.' + config.tplEngine, function(err){
 		if(err){
-			res.render('pages/404.' + config.tplEngine, data);
+			res.render('pages/404.' + config.tplEngine);
 		}else{
-			res.render(name + '.' + config.tplEngine, data);
+			res.render(name + '.' + config.tplEngine);
 		}
 		next();
 	});

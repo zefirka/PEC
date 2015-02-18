@@ -19,6 +19,7 @@ pudra.getController = function(route){
 	return typeof route.controller == 'function' ? route.command : c; 
 }
 
+//= include modules/ng/utils.js
 //= include modules/ng/functional.js
 //= include modules/ng/controllers.js
 //= include modules/ng/directives.js

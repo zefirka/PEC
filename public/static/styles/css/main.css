@@ -301,3 +301,10 @@ ul .params input {
 .gen-data label {
   font-size: 14px;
 }
+#structure-sticky-wrapper {
+  height: inherit !important;
+}
+.is-sticky #structure {
+  background: white;
+  z-index: 9900;
+}

@@ -55,3 +55,7 @@ var App = angular.module('pudra',['ngRoute', 'ngSanitize', 'ngCookies', 'warden-
         }]);
     }]);
 })(angular);
+
+$(function(){
+    $('#structure').sticky({topSpacing:10})    
+});

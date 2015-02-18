@@ -18,6 +18,44 @@ pudra.getController = function(route){
 	var c = pudra.controllers[route.controller] || pudra.controllers[route.name] || pudra.controllers[route.route]; 
 	return typeof route.controller == 'function' ? route.command : c; 
 }
+function guiid(){
+	return [1,2,3].map(function(){ return (Math.random()*1000)>>0}).join('-');
+}
+
+function typeCount(type, arr){
+	return _.filter(arr, function(f){
+		return f.type == type;
+	}).length
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+function clean(obj, val){
+	for(var i in obj){
+		if(_.is.obj(obj[i])){
+			obj[i] = clean(obj[i], val);
+		}else{
+			obj[i] = val || '';
+		}
+	}
+	return obj;
+}
+
+function mapIndex(data){
+	return _.map(data, function(field, i){
+		field.hidden = true;
+		field.index = i;
+		return field;			
+	});
+}
+
 // TODO Сделать красиво
 pudra.functional.sizematch = (function(){
 	var items = [],
@@ -143,64 +181,21 @@ _.mask = function(arr, prop){
 	});
 }
 
-function guiid(){
-	return [1,2,3].map(function(){ return (Math.random()*1000)>>0}).join('-');
-}
-
-function typeCount(type, arr){
-	return _.filter(arr, function(f){
-		return f.type == type;
-	}).length
-}
-
-function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-}
-
-function clean(obj, val){
-	for(var i in obj){
-		if(_.is.obj(obj[i])){
-			obj[i] = clean(obj[i], val);
-		}else{
-			obj[i] = val || '';
-		}
-	}
-	return obj;
-}
-
-function map(data){
-	debugger;
-	return _.map(data, function(field, i){
-		field.hidden = true;
-		field.index = i;
-		return field;			
-	});
-}
-
 pudra.controllers.mainCtrl = function($scope){
 	var $interval = pudra.inject('$interval'),
+		getFields = pudra.api.getType('load').map('.data'),
 		timer;
+
 
 	$scope.tablewidth = 960;
 	$scope.phonenum = "8-800-775-1060";
 	$scope.pattern = "http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png";
-
 	$scope.settings = {
 		height: "390px",
-		autosave : true
+		autosave : false
 	}
 
-	pudra.api.http.get('fields')
-
-	var getFields = pudra.api.getType('load').map('.data')
-
-	getFields.map(map).watch().bindTo($scope, 'fields');
-	
+	getFields.map(mapIndex).watch().bindTo($scope, 'fields');	
 
 	$scope.saveFile = function(sielent){
 		pudra.api.http.post('fields:save', {
@@ -230,6 +225,8 @@ pudra.controllers.mainCtrl = function($scope){
 		console.log(_.map($scope.fields, function(e, i){
 			return Warden.Utils.interpolate('Index : {{index}}, Name: {{name}}', e);
 		}).join('\n'));
+
+		$scope.$apply()
 	}
 
 	$scope.changeQuantity = function(field){
@@ -238,16 +235,16 @@ pudra.controllers.mainCtrl = function($scope){
 		field.name = field.data[field.quantity ? 'plural' : 'singular'].name;
 	}
 
+	// Копирование поля
 	$scope.copy = function(field){
 		var newField = {},
 			index = field.index;
 
 		for(var i in field){
 			if(field.hasOwnProperty(i)){
-				newField[i] = clone(field[i]);
+				newField[i] = angular.copy(field[i]);
 			}
 		}
-		
 		
 		for(var i = field.index+1; i<$scope.fields.length;i++ ){
 			$scope.fields[i].index += 1;
@@ -255,12 +252,10 @@ pudra.controllers.mainCtrl = function($scope){
 
 		newField.id = guiid();
 		delete newField.$$hashKey;
-		$scope.fields = $scope.fields.slice(0, index).concat([newField]).concat($scope.fields.slice(index))
-
-
+		$scope.fields = $scope.fields.slice(0, index).concat([newField]).concat($scope.fields.slice(index));
 	}
 
-
+	// Удаление поля
 	$scope.remove = function(field){
 		if(typeCount(field.type, $scope.fields) == 1 || !field.repeat){
 			$scope.fields[field.index].disabled = !$scope.fields[field.index].disabled;
@@ -284,31 +279,9 @@ pudra.controllers.mainCtrl = function($scope){
 		}
 	}
 
-	// $scope.query = '';
-	// $scope.results = []
-	
-	// var searches = pudra.api.getType('search'),
-	// 	searchQueries = $scope.$stream('query')
-	// 		.map('.newValue')
-	// 		.filter(function(e){
-	// 			return e.length > 0
-	// 		})
-	// 		.debounce(500);
-	
-	// searchQueries.listen(function(query){
-	// 	pudra.api.http.get('search', {
-	// 		query: query,
-	// 		sielent: true
-	// 	});
-	// });		
-		
-	// searches
-	// 	.map('.results')
-	// 	.watch()
-	// 	.bindTo($scope, 'results');
-
+	/* Inits */
 	$scope.switchAutosave();
-
+	pudra.api.http.get('fields')
 }
 
 /* Thutaq Directives */
