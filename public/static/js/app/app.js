@@ -245,6 +245,13 @@ pudra.controllers.mainCtrl = function($scope){
 				newField[i] = angular.copy(field[i]);
 			}
 		}
+
+		for(var i in field.data){
+			var o = field.data[i]
+			if(_.is.obj(o)){
+				
+			}
+		}
 		
 		for(var i = field.index+1; i<$scope.fields.length;i++ ){
 			$scope.fields[i].index += 1;
