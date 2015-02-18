@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-mkrtchyan-parc/pudra-email-constructor"
+    "url": "https://github.com/d-mkrtchyan-parc/PEC"
   },
   "author": "Trdat Mkrtchyan <wombtromb@gmail.com>",
   "license": "GNU GPL",
   "bugs": {
-    "url": "https://github.com/d-mkrtchyan-parc/pudra-email-constructor/issues"
+    "url": "https://github.com/d-mkrtchyan-parc/PEC/issues"
   },
-  "homepage": "https://github.com/d-mkrtchyan-parc/pudra-email-constructor",
+  "homepage": "https://github.com/d-mkrtchyan-parc/PEC",
   "devDependencies": {
     "body-parser": "^1.10.0",
     "colors": "^1.0.3",

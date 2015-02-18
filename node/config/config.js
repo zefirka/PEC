@@ -3,6 +3,7 @@ var root 		= __dirname + "/../../public/",
 
 module.exports = {
 	root : root, //the root of the project
+	port : 3002,
 	
 	/* Language configs */
 	deflang : 'en', //default language
@@ -41,6 +42,9 @@ module.exports = {
 
 	/* Development */
 	dev : {
-		logTime : false
+		logTime : false,
+		logTpl : false,
+		logAuth : false,
+		logMorgan : false
 	}
 }

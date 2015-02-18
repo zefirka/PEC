@@ -1,4 +1,4 @@
-var express 		= require('express'),
+var	express 		= require('express'),
 	favicon 		= require('serve-favicon'),
 	bodyParser 		= require('body-parser'),
 	morgan     		= require('morgan'),
@@ -36,31 +36,24 @@ if(env == 'development'){
 	/* configuration for development */
 	
 	/* Configure morgan */
-	app.use(morgan('dev'));
+	if(config.dev.logMorgan){
+		app.use(morgan('dev'));
+	}
 
 	/* Proxy configuration */ 
 	app.set('trust proxy', 'loopback, 127.0.0.1');
 	
-	app.use(function (req, res, next) {
-  		console.log('Request time:', Date.now());
-  		next();
-	});
+	if(config.dev.logTime){
+		app.use(function (req, res, next) {
+	  		console.log('Request time:', Date.now());
+	  		next();
+		});
+	}
 }
 
 /* Useragent enviroment configuration */
 app.use(favicon(config.meta.favicon));
 app.use(express.static(config.root));
-
-/* Configure browser user-agent prop and cookies */
-app.use(function(req, res, next){
-	config.userAgent = utils.uaDetect(req);
-	console.log('isAuth: '.green + config.isAuth.green);
-	config.isAuth = config.isAuth ===  true ? true : utils.is.exist(req.cookies.sessionID);
-	config.wasAuth =  utils.is.exist(req.cookies.hashcode);
-	next();
-});
-
-
 
 app.get('/', function (req, res) {
   res.render('index.jade', utils.extend({}, config, require(config.controllers + 'index.js')));
@@ -144,7 +137,7 @@ app.get('/*.tpl', function (req, res, next) {
 	});
 });
 
-var server = app.listen(3002, function () {
+var server = app.listen(config.port, function () {
   	var host = server.address().address,
   		port = server.address().port;
 

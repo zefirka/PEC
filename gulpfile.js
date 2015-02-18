@@ -39,10 +39,6 @@ task("scripts:build", function() {
 		.pipe( gulp.dest(pkg.front + 'static/js/app/'));
 }).
 
-task('compile', function(){
-
-}).
-
 task('scripts', function(){
 	gulp.run("scripts:build");
 }).
