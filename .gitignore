@@ -12,7 +12,3 @@ local_docs
 # NetBeans Projects
 nbprojects/*
 nbprojects
-
-# Vendor libraries
-public/libs/*
-public/libs/

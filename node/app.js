@@ -18,7 +18,15 @@ for(var i in warden.Utils){
 }
 
 var app = express(),
-	env = process.env.NODE_ENV || 'development';
+	env = process.env.NODE_ENV || 'development',
+	port = config.port;
+
+
+process.argv.forEach(function(arg){
+	if(arg.indexOf("-p")>=0){
+		port = parseInt(arg.split('=').pop())
+	}
+})
 
 
 /* Configure middlewares */
@@ -137,7 +145,7 @@ app.get('/*.tpl', function (req, res, next) {
 	});
 });
 
-var server = app.listen(config.port, function () {
+var server = app.listen(port, function () {
   	var host = server.address().address,
   		port = server.address().port;
 
