@@ -5,6 +5,7 @@ var	express 		= require('express'),
 	warden 			= require('warden.js'),
 	jade 			= require('jade'),
 	cookieParser 	= require('cookie-parser'),
+	auth 			= require('http-auth'),
 	color; 		// inited only in dev mode
 	
 
@@ -33,6 +34,11 @@ process.argv.forEach(function(arg){
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use(auth.connect(auth.basic({
+    realm: "Hello dude",
+    file: __dirname + "/users.htpasswd" // gevorg:gpass, Sarah:testpass ...
+})));
 
 /* Jade configuration */
 app.set('views', config.root + config.views);
