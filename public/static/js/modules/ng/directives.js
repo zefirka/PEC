@@ -83,13 +83,14 @@ pudra.directives.letter = function(){
 					$("[ng-src]", $(".builder")).each(function(){
 						$(this).removeAttr("ng-src");
 					});
-
+					
 					var res = $(".builder")
 						.html()
 						.replace(/class\=\"\"/g, '')
 						.replace(/class\=\"ng-binding\"/g, '')
 						.replace(/\<\!\-\- end ngRepeat\: \(index\, field\) in fields \-\-\>/g, '')
 						.replace(/\<\!\-\- ngInclude\: field\.template \-\-\>/g, '')
+						.replace(/<!--(.*?)-->/g, '')
 
 					pudra.api.sielents.fire({
 						resulting: res,

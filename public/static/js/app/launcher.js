@@ -22,6 +22,9 @@ var App = angular.module('pudra',['ngRoute', 'ngSanitize', 'ngCookies', 'warden-
 	dolist(app, pudra.filters, 'filter');	
 })(App);
 
+
+
+
 (function(ng) {
     var wardenModule = ng.module('warden-angular-bridge', []);
 
@@ -55,7 +58,3 @@ var App = angular.module('pudra',['ngRoute', 'ngSanitize', 'ngCookies', 'warden-
         }]);
     }]);
 })(angular);
-
-$(function(){
-    $('#structure').sticky({topSpacing:10})    
-});

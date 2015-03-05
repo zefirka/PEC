@@ -6,7 +6,7 @@ var gulp 		= require('gulp'),
 	include 	= require('gulp-include');
 
 /* Misc */
-var	pkg 			= require('./package.json');
+var	pkg 		= require('./package.json');
 
 
 gulp.

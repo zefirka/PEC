@@ -8,7 +8,7 @@ table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir
 				table( align="center" cellpadding="0" cellspacing="0" style="border-spacing: 0px; width: 100%;")
 					tbody
 						tr
-							td(align="center" valign="middle" style="width: 100%; padding-left: 15px; padding-rigth: 15px; text-align: center; padding-top: 20px; padding-bottom: 20px;")
+							td(align="center" valign="middle" style="width: 100%; padding-left: 15px; padding-right: 15px; text-align: center; padding-top: 20px; padding-bottom: 20px;")
 								a(href="http://pudra.ru" style="text-decoration: none;") 
 									img(vspace="0" hspace="0" src="http://pudra.ru/skins/pudra/mail/email_letter/img/common/logo.png" alt="Pudra.ru" style="display: inline-block;")
 								br
@@ -43,7 +43,7 @@ table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir
 											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
 							
 				span.to-remove(ng-repeat="(index, field) in fields")
-					span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : fields.disabled}" ng-hide="field.disabled")
+					span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : field.disabled}" ng-hide="field.disabled")
 					
 				// Ленточка: Давай общаться 
 				div(style="height: 40px; width: 100%; margin-top: 25px; margin-bottom: 0px; background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/common/ribbon/gray_ribbon_02.png'); text-align: center;")

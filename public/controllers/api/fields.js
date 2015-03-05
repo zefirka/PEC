@@ -14,7 +14,7 @@ module.exports = [
 		quantitable: false,
 		disabled: false,
 		data: {
-			syntax: "{{IF `( firstname STRING_EQI '')`}}Привет!{{ELSE}}Привет, [[firstname]]!{{ENDIF}}",
+			syntax: "{{IF `( name STRING_EQI '')`}}Привет!{{ELSE}}Привет, [[name]]!{{ENDIF}}",
 			text: 'Приветствие'
 		}
 	},
@@ -142,6 +142,27 @@ module.exports = [
 				height: 35,
 				number : 4,
 				name : 'Лента: бестселлеры'
+			}
+		}
+	},
+
+	{	
+		index: 5,
+		id: guiid(),
+		type: 'r',
+		template: 'jade/template/ribbon.tpl',
+		form : false,
+		repeat: false,
+		quantitable: false,
+		quantity: 1,
+		disabled: false,
+		name: 'Лента: новости',
+		data: {
+			plural : {
+				width: 144,
+				height: 35,
+				number : 12,
+				name : 'Лента: новости'
 			}
 		}
 	},
