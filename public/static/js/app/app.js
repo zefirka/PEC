@@ -186,7 +186,13 @@ pudra.controllers.mainCtrl = function($scope){
 		getFields = pudra.api.getType('load').map('.data'),
 		timer;
 
-
+	var setIndexes = function(){
+		$scope.fields = $scope.fields.map(function(field, index){
+			field.index = index;
+			return field;
+		});
+	}
+		
 	$scope.tablewidth = 960;
 	$scope.phonenum = "8-800-775-1060";
 	$scope.pattern = "http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png";
@@ -217,11 +223,8 @@ pudra.controllers.mainCtrl = function($scope){
 			return order.indexOf(a.id) > order.indexOf(b.id) ? 1 : -1;
 		});
 
-		$scope.fields = _.map($scope.fields, function(e, i){
-			e.index = i;
-			return e;
-		});
-
+		setIndexes();
+		
 		console.log(_.map($scope.fields, function(e, i){
 			return Warden.Utils.interpolate('Index : {{index}}, Name: {{name}}', e);
 		}).join('\n'));
@@ -245,14 +248,7 @@ pudra.controllers.mainCtrl = function($scope){
 				newField[i] = angular.copy(field[i]);
 			}
 		}
-
-		for(var i in field.data){
-			var o = field.data[i]
-			if(_.is.obj(o)){
-				
-			}
-		}
-		
+	
 		for(var i = field.index+1; i<$scope.fields.length;i++ ){
 			$scope.fields[i].index += 1;
 		}
@@ -268,9 +264,7 @@ pudra.controllers.mainCtrl = function($scope){
 			$scope.fields[field.index].disabled = !$scope.fields[field.index].disabled;
 		}else{
 			$scope.fields.splice(field.index, 1);
-			for(var i = field.index+1; i<$scope.fields.length;i++ ){
-				$scope.fields[i].index -= 1;
-			}			
+			setIndexes();
 		}
 	}
 
