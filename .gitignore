@@ -14,4 +14,4 @@ nbprojects/*
 nbprojects
 
 # Files
-public/controllers/files*
+public/controllers/files/fields.json
