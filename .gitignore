@@ -12,3 +12,6 @@ local_docs
 # NetBeans Projects
 nbprojects/*
 nbprojects
+
+# Files
+public/controllers/files*
