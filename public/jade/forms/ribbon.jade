@@ -1,0 +1,7 @@
+.params
+	div
+		form
+			select.form-control(ng-model="field.data.value" placeholder='Link URL' value="{{field.data.number}}")
+				option(ng-repeat="option in field.data.values" value="{{option.number}}" width="{{option.width}}" height="{{option.height}}") {{option.alias}}
+		div
+		
