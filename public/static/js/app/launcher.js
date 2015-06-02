@@ -19,7 +19,7 @@ var App = angular.module('pudra',['ngRoute', 'ngSanitize', 'ngCookies', 'warden-
 	dolist(app, pudra.directives, 'directive');	
 	
 	/* Filters*/
-	dolist(app, pudra.filters, 'filter');	
+	dolist(app, pudra.filters, 'filter');
 })(App);
 
 

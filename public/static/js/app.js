@@ -9,7 +9,8 @@ var pudra = {
 	api : {},
 	
 	controllers : {},
-	directives : {}
+	directives : {},
+	filters : {}
 	
 }
 
@@ -23,3 +24,4 @@ pudra.getController = function(route){
 //= include modules/ng/functional.js
 //= include modules/ng/controllers.js
 //= include modules/ng/directives.js
+//= include modules/ng/filters.js
