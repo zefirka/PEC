@@ -1,0 +1,12 @@
+[
+  {
+    "name": "ribbon",
+    "fields" : [
+      {
+        "name" : "heading",
+        "type" : "number",
+        "default" : 0
+      }
+    ]
+  }
+]

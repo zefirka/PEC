@@ -1,27 +1,30 @@
 var _ = Warden.Utils;
 
 
-var pudra = {
+var pec = {
 	static : 'public/static/jade/',
 	bootstrap : Bootstrap,
 	routes: {},
 	functional : {},
 	api : {},
-	
+	events: Warden({}),
 	controllers : {},
 	directives : {},
 	filters : {}
-	
+
 }
 
 /* Function returns controller */
-pudra.getController = function(route){
-	var c = pudra.controllers[route.controller] || pudra.controllers[route.name] || pudra.controllers[route.route]; 
-	return typeof route.controller == 'function' ? route.command : c; 
+pec.getController = function(route){
+	var c = pec.controllers[route.controller] || pec.controllers[route.name] || pec.controllers[route.route];
+	return typeof route.controller == 'function' ? route.command : c;
 }
+
+
 
 //= include modules/ng/utils.js
 //= include modules/ng/functional.js
 //= include modules/ng/controllers.js
 //= include modules/ng/directives.js
 //= include modules/ng/filters.js
+//= include modules/ng/factories.js

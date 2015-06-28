@@ -1,6 +1,6 @@
 {
   "name": "PEC",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Pudra Newsletter Constructor",
   "main": "index.html",
   "scripts": {
@@ -29,8 +29,13 @@
     "jade": "^1.8.2",
     "morgan": "^1.5.0",
     "serve-favicon": "^2.2.0",
-    "warden.js": "0.1.3"
+    "warden.js": "0.3.5",
+    "http-auth": "~2.2.8"
   },
   "front": "./public/",
-  "back": "./node/"
+  "files": "./files",
+  "back": "./node/",
+  "dependencies": {
+    "jsonfile": "~2.2.1"
+  }
 }

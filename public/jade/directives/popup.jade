@@ -1,0 +1,8 @@
+.ng-popup.overlap-manager.closed(ngpopup style="display:none")
+  .overlay
+  .container
+    div.i-area(ng-include="contentUrl")
+    
+    div(ng-hide="!innerButtons")
+      a(ng-click="onSave()" class="btn btn-primary") Ок
+      a(ng-click="onCancle()" class="btn btn-danger") Закрыть

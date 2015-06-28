@@ -1,34 +1,185 @@
-pudra.controllers.mainCtrl = function($scope){
-	var $interval = pudra.inject('$interval'),
-		getFields = pudra.api.getType('load').map('.data'),
-		timer;
+function JSON2Fields(field){
+	var res = {};
 
-	var setIndexes = function(){
-		$scope.fields = $scope.fields.map(function(field, index){
-			field.index = index;
-			return field;
+	for(var name in field){
+			res.name = name;
+	}
+
+	field = field[name];
+
+	res.type = field.type;
+
+	if(field.options){
+		res.options = field.options;
+	}
+
+	delete field.options;
+	delete field.type;
+
+	for(var option in field){
+		res[option] = field[option];
+	}
+
+	return res
+}
+
+pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
+	var $cookie = pec.inject("$cookieStore"),
+			defTpl = $cookie.get('template');
+
+	if(defTpl){
+		$scope.templateIsChosen = true;
+	}else{
+		$scope.templateIsChosen = false;
+	}
+
+	templates
+		.loadTemplates()
+		.then(templates.getTemplates.bind($scope));
+
+	$scope.chooseTpl = function (tpl, popup) {
+		$scope.templateIsChosen = true;
+		templates.chooseTemplate(tpl).then(function(){
+			$scope.template = tpl;
+			$cookie.put('template', tpl.name);
+			if(!popup){
+				pec.events.emit('popup:close');
+			}
 		});
 	}
-		
-	$scope.tablewidth = 960;
-	$scope.phonenum = "8-800-775-1060";
-	$scope.pattern = "http://pudra.ru/skins/pudra/mail/email_letter/img/textures/background.png";
+
+	$scope.changeTemplate = function() {
+		templates
+			.loadTemplates(true)
+			.then(templates.getTemplates.bind($scope))
+			.then(function(){
+				$scope.templateIsChosen = false;
+				pec.events.emit('popup:open', {
+					url: "jade/templates.tpl",
+					onClose : function(){
+						$scope.templateIsChosen = true;
+					},
+					onCancle : function(next){
+						$scope.templateIsChosen = true;
+						next();
+					}
+				});
+			});
+	}
+
+	$scope.deleteTemplate = function() {
+		$scope.innerButtons = true;
+		pec.events.emit('popup:open', {
+			url: 'jade/popups/warn.tpl',
+			onSave : function(scope, next){
+				templates.removeTemplate($scope.template).then(function(tpls){
+					$scope.templateIsChosen = false;
+					templates.getTemplates.bind($scope)(tpls);
+				}).then(next);
+			}
+		})
+	}
+
+	$scope.editTemplate = function(isNew) {
+		$scope.isNewTpl = isNew;
+		$scope.innerButtons = false;
+
+		pec.events.emit('popup:open', {
+			url: 'jade/popups/edit.tpl',
+			css: 'new-template',
+		});
+	}
+
+	/* Editing template */
+	$scope.message = "Добавить новую переменную";
+	$scope.heading = "Переменные";
+}];
+
+/* Edit template controller */
+pec.controllers.editTemplateCtrl = ['$scope', 'templates', function($scope, templates) {
+	var isNew = $scope.isNewTpl == true;
+
+	$scope.errors = [];
+
+	$scope.tpl = {
+		name: isNew ? "" : $scope.template.name,
+		templates: isNew ? "html" : ($scope.template.templates || "html"),
+		variables: []
+	}
+
+	if(!isNew && $scope.template.variables && $scope.template.variables.length){
+		$scope.tpl.variables = $scope.template.variables.map(JSON2Fields);
+	}else{
+		$scope.tpl.variables = [];
+	}
+
+	if(!isNew){
+		var cachedName = $scope.template.name;
+	}
+
+	$scope.onSave = function(){
+		$scope.tpl.modified = new Date().getTime();
+
+		var errors = templates.validate($scope.tpl, $scope);
+
+		if(!errors.length){
+			if(isNew){
+				templates
+					.saveTemplate($scope.tpl)
+					.then(templates.getTemplates.bind($scope))
+					.then(function(){
+						pec.events.emit('popup:close')
+					})
+			}else{
+				templates
+					.updateTemplate($scope.tpl, cachedName)
+					.then(function(tpls){
+						return templates.getTemplates.bind($scope)(tpls, $scope.tpl.name);
+					})
+					.then(function(){
+						pec.events.emit('popup:close')
+					})
+			}
+		}else{
+			$scope.errors = errors;
+		}
+	}
+
+	$scope.onCancle = function(){
+		$scope.isNewTpl = false;
+		pec.events.emit('popup:close');
+	}
+
+}];
+
+
+
+
+
+
+
+
+
+
+
+pec.controllers.editCtrl = function($scope){
+	var $interval = pec.inject('$interval'),
+			$http = pec.inject('$http'),
+			timer;
+
 	$scope.settings = {
-		height: "390px",
 		autosave : false
 	}
 
-	getFields.map(mapIndex).watch().bindTo($scope, 'fields');	
-
 	$scope.saveFile = function(sielent){
-		pudra.api.http.post('fields:save', {
+		pec.api.http.post('fields:save', {
 			sielent: sielent,
 			fields: $scope.fields
 		});
 	}
 
 	$scope.loadFile = function(){
-		pudra.api.http.get('fields:load');
+		pec.api.http.get('fields:load');
 	}
 
 	$scope.switchField = function(f){
@@ -41,7 +192,7 @@ pudra.controllers.mainCtrl = function($scope){
 		});
 
 		setIndexes();
-		
+
 		console.log(_.map($scope.fields, function(e, i){
 			return Warden.Utils.interpolate('Index : {{index}}, Name: {{name}}', e);
 		}).join('\n'));
@@ -65,7 +216,7 @@ pudra.controllers.mainCtrl = function($scope){
 				newField[i] = angular.copy(field[i]);
 			}
 		}
-	
+
 		for(var i = field.index+1; i<$scope.fields.length;i++ ){
 			$scope.fields[i].index += 1;
 		}
@@ -99,5 +250,5 @@ pudra.controllers.mainCtrl = function($scope){
 
 	/* Inits */
 	$scope.switchAutosave();
-	pudra.api.http.get('fields')
+	//pec.api.http.get('fields')
 }

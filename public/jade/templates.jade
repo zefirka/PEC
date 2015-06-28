@@ -1,0 +1,4 @@
+section(ng-hide="templateIsChosen")
+  h2 Выберите шаблон
+  ul
+    li(ng-repeat="tpl in templates", ng-click="chooseTpl(tpl)") {{tpl.name}} (изменено {{tpl.modified}})

@@ -1,25 +1,25 @@
 // TODO Сделать красиво
-pudra.functional.sizematch = (function(){
+pec.functional.sizematch = (function(){
 	var items = [],
-			classmap = pudra.bootstrap.responsive.rangeClasses.map(function(e){
+			classmap = pec.bootstrap.responsive.rangeClasses.map(function(e){
 				return 'g-' + e;
 			}).join(' '),
 			$window = $(window);
-	
+
 	function react(e){
 		var w = $window.width();
 		items.forEach(function(item){
-			item.removeClass(classmap).addClass('g-' + pudra.bootstrap.getRange(w))
+			item.removeClass(classmap).addClass('g-' + pec.bootstrap.getRange(w))
 		});
 	}
-	
+
 	$window.resize(react)
 	react();
-	
+
 	return {
 		add : function(item){
 			item.$$sizematchID = items.push(item);
-			item.removeClass(classmap).addClass('g-' + pudra.bootstrap.getRange($window.width()));
+			item.removeClass(classmap).addClass('g-' + pec.bootstrap.getRange($window.width()));
 		},
 		remove : function(item){
 			if(item.$$sizematchID){
@@ -27,18 +27,17 @@ pudra.functional.sizematch = (function(){
 			}
 		}
 	}
-	
+
 })();
 
-pudra.inject = function(module) {
-    return angular.element(document).injector().get(module);
+pec.inject = function(module) {
+  return angular.element(document).injector().get(module);
 }
 
-
-pudra.api.cache = (function(){
+pec.api.cache = (function(){
 	var store = {};
 
-	function cache(namespace, data){	
+	function cache(namespace, data){
 		store[namespace] = data;
 	}
 
@@ -54,67 +53,40 @@ pudra.api.cache = (function(){
 })();
 
 
-/* HTTP */
-Warden.extend(pudra.api);
+Warden.extend(pec.api);
 
-pudra.api.gets = Warden.makeStream(function(emit){
-	pudra.api.listen('get:after', function(data){
-		emit(data);
-	});
-}).bus();
+pec.http = {};
 
-pudra.api.posts = Warden.makeStream(function(emit){
-	pudra.api.listen('post:after', emit);
-}).bus();
+(['get', 'post']).forEach(function(method) {
+	pec.http[method] = function(url, options, sielent) {
 
-pudra.api.getsBefore = Warden.makeStream(function(emit){
-	pudra.api.listen('get:before', emit);
-}).bus();
+		pec.api.emit('before:' + method, {
+			sielent : sielent,
+			url: url,
+			options: options
+		});
 
-pudra.api.postsBefore = Warden.makeStream(function(emit){
-	pudra.api.listen('post:before', emit);
-}).bus();
-
-pudra.api.getType = function(type){
-	return pudra.api.gets.filter(function(e){
-		return e.type == type;
-	});
-}
-
-pudra.api.http = (function(){
-	function response(type, response){
-		pudra.api.emit(type + ':after', response);
-	}
-
-	function request(type){
-		return function (use, data){
-			pudra.api.emit(type + ':before', data);
-
-			if(data && data.cache && pudra.api.cache.cached(use)){
-				response(type, pudra.api.cache.get(use));
-			}else{
-				pudra.inject('$http')[type]( use.indexOf('search') >= 0 ? use : '/api?' + use, data).then(function(res){
-					if(data && data.cache){
-						pudra.api.cache(use, res)
-					}
-					response(type, res.data);
-
-				}, function(res){
-					res.isError = true;
-					response(type, res);
-				});
-			}
+		options.sielent = sielent;
 		
-			return pudra.api[type + 's'];
-		}
+		return pec
+			.inject('$http')({
+				method: method.toUpperCase(),
+				url: url,
+				params: options
+			})
+			.success(function(response) {
+				pec.api.emit('success:' + method, response);
+			})
+			.error(function(response) {
+				pec.api.emit('error:' + method, response);
+			})
+			.then(function(response) {
+				pec.api.emit('after:' + method, response);
+				return response;
+			});
 	}
+});
 
-
-	return {
-		get : request('get'),
-		post: request('post')
-	}
-})();
 
 
 _.mask = function(arr, prop){

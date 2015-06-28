@@ -1,6 +1,4 @@
-/* Thutaq Directives */
-
-pudra.directives.ngpopup = function(){ 
+pec.directives.ngpopup = function(){
 	function by(prop, val){
 		return function(e){
 			return e[prop] == val;
@@ -8,46 +6,83 @@ pudra.directives.ngpopup = function(){
 	}
 	return function(){
 		return {
-			restrict: 'A',
-			link: function(scope, element, attr){
-				var $timeout = pudra.inject('$timeout'),
-					popup = $(element);
+			restrict: 'E',
+			transclude: true,
 
-				$(document).bind('keydown', function(e) {
-					if(e.ctrlKey && (e.which == 83)) {
-						e.preventDefault();
-				    	scope.saveFile();
-						return false;
+			link: function(scope, element, attr){
+				var $timeout = pec.inject('$timeout'),
+						popup = $(element).find('.ng-popup'),
+						onSave,
+						onClose,
+						css = null,
+						onCancle,
+						state = false;
+
+				function close() {
+					debugger;
+					state = false;
+					$("body .wrapper").removeClass("distant");
+					popup.removeClass("open");
+					$timeout(function(){
+							popup.hide();
+							onClose && onClose(scope);
+							scope.contentUrl = "";
+							popup.find('.i-area').children().remove();
+							element.removeClass(css);
+					}, 100);
+				}
+
+				scope.contentUrl = "";
+
+				scope.open = function(data, url){
+					state = true;
+					$("body .wrapper").addClass("distant");
+					scope.contentUrl = url;
+
+					$timeout(function(){
+  						popup.show();
+  						popup.addClass("open");
+							scope.data = data;
+					}, 100);
+				};
+
+				scope.onSave = function () {
+					return onSave ? onSave(scope, close) : close();
+				}
+
+				scope.onCancle = function(){
+					return onCancle ? onCancle(scope, close) : close();
+				}
+
+				pec.events.listen("popup:open", function(data){
+					scope.open(data.data, data.url);
+					onCancle = data.onCancle && data.onCancle;
+					onSave = data.onSave && data.onSave;
+					onClose = data.onClose && data.onClose;
+
+					if(data.css){
+						css = data.css;
+						element.addClass(css);
 					}
 				});
 
-				pudra.api.sielents = pudra.api.posts.filter(function(response){
-					return !response.sielent
-				})
+				pec.events.listen("popup:close", close);
 
-				pudra.api.sielents.listen(function(response){
-					scope.resulting = response.resulting || false;
-					$("body main").addClass("distant");                   
-					$timeout(function(){
-  						popup.show();
-  						popup.addClass("open");  
-  						scope.message = response.message;
-					}, 100);
+				pec.events.listen("popup:toggle", function(data){
+					if(state){
+						close()
+					}else{
+						scope.open(data.data, data.url);
+					}
 				});
 
-				scope.collapse = function(){
-					$("body main").removeClass("distant");
-				    popup.removeClass("open");  
-				    $timeout(function(){
-				        popup.hide();    
-				    }, 100);
-				}				
-			}
+			},
+			templateUrl: 'jade/directives/popup.tpl'
 		}
 	}
 }
 
-pudra.directives.letter = function(){ 
+pec.directives.letter = function(){
 	return function(){
 		return {
 			restrict: 'A',
@@ -79,11 +114,11 @@ pudra.directives.letter = function(){
 
 					sanitize(ft);
 					$(".ng-scope", ft).removeClass("ng-scope");
-					
+
 					$("[ng-src]", $(".builder")).each(function(){
 						$(this).removeAttr("ng-src");
 					});
-					
+
 					var res = $(".builder")
 						.html()
 						.replace(/class\=\"\"/g, '')
@@ -92,7 +127,7 @@ pudra.directives.letter = function(){
 						.replace(/\<\!\-\- ngInclude\: field\.template \-\-\>/g, '')
 						.replace(/<!--(.*?)-->/g, '')
 
-					pudra.api.sielents.fire({
+					pec.api.sielents.fire({
 						resulting: res,
 						data : { sielent: false },
 						message: 'На, полуйча браток, братишка'
@@ -104,13 +139,14 @@ pudra.directives.letter = function(){
 	}
 }
 
-pudra.directives.preloader = function(){
+pec.directives.preloader = function(){
 	return function(){
 		return {
 			restrict: 'E',
 			transclude: true,
 			link: function(scope, element, attr){
 				var speed = parseInt(attr.speed || 100);
+
 				scope.css = attr['class'];
 
 				function response(){
@@ -120,10 +156,10 @@ pudra.directives.preloader = function(){
 					}, parseInt(attr.timeout) || 1000);
 				}
 
-				var $timeout = pudra.inject('$timeout');
-				
+				var $timeout = pec.inject('$timeout');
+
 				if(attr.init){
-					pudra.api.getsBefore.listen(function(e){
+					pec.api.listen('before:*',function(e){
 						if(!e.sielent){
 							$(element).fadeIn(100);
 						}
@@ -133,7 +169,7 @@ pudra.directives.preloader = function(){
 				if(attr.autoresponse){
 					response()
 				}else{
-					pudra.api.gets.listen(response);
+					pec.api.listen('after:*', response);
 				}
 			},
 			templateUrl: 'jade/directives/preloader.tpl'
@@ -141,7 +177,65 @@ pudra.directives.preloader = function(){
 	}
 }
 
-pudra.directives.list = function(){
+
+pec.directives.pecForm = function(){
+	return function(){
+		return {
+			restrict: 'E',
+			transclude: true,
+			link: function(scope, element, attr){
+				var id = 0,
+						optid = 0;
+
+				var $parse = pec.inject("$parse");
+				scope.fields = $parse(attr.fields)(scope)
+
+				scope.newField = function(){
+					this.addingNewField = true;
+					this.newFieldType = "text";
+				}
+
+				scope.collapseAddition = function(){
+					this.addingNewField = false;
+					this.newFieldType = "text";
+				}
+
+				scope.addNewField = function () {
+					this.fields.push({
+						id : id++,
+						type: this.newFieldType,
+						options : []
+					});
+				}
+
+				scope.addOption = function(field) {
+					field.options.push({
+						id: optid++,
+						value: "",
+						name: ""
+					});
+				}
+
+				scope.removeOption = function (field, option) {
+					debugger;
+					field.options = field.options.filter(function(o){
+						return o.id !== option.id;
+					});
+				}
+
+			},
+			templateUrl: 'jade/directives/form.tpl'
+		}
+	}
+}
+
+
+
+
+
+
+
+pec.directives.list = function(){
 	return function(){
 		return {
 			restrict: 'E',
@@ -162,7 +256,7 @@ pudra.directives.list = function(){
 	}
 }
 
-pudra.directives.mainTable = function(){
+pec.directives.mainTable = function(){
 	return function(){
 		return {
 			restrict: 'A',
@@ -171,8 +265,8 @@ pudra.directives.mainTable = function(){
 
 				scope.$watch('tablewidth', function(bw){
 					bw = parseInt(bw);
-					
-					var cw = table.width(),					
+
+					var cw = table.width(),
 						brw =table.find('.gen-demo').width();
 
 					table.width(cw - brw + bw);
@@ -183,7 +277,20 @@ pudra.directives.mainTable = function(){
 	}
 }
 
-pudra.directives.item = function(){
+pec.directives.etemplate = function () {
+	return function () {
+		return {
+			restrict: 'E',
+			transclude: true,
+			link: function (scope, element, attr) {
+
+			},
+			templateUrl: 'jade/table.tpl'
+		}
+	}
+}
+
+pec.directives.item = function(){
 	return function(){
 		return {
 			restrict: 'E',
@@ -195,14 +302,31 @@ pudra.directives.item = function(){
 	}
 }
 
-pudra.directives.sizematch = function(){
+pec.directives.sizematch = function(){
 	return function(){
 		return {
 			restrict: 'A',
 			link: function(scope, element, attr){
-				pudra.functional.sizematch.add($(element));;
+				pec.functional.sizematch.add($(element));;
 
 			}
 		}
 	}
 }
+
+pec.directives.newTpl = function() {
+  return function(){
+		return {
+	    restrict: 'A',
+	    link: function(scope, elem, attr) {
+				var isNew = attr.newTpl == "true";
+
+				scope.tpl = {
+					name: isNew ? "" : scope.template.name,
+					templates : isNew ? "html"  : scope.template.templates,
+					variables : []
+				};
+			}
+    }
+  };
+};

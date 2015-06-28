@@ -1,0 +1,19 @@
+// Картинка 
+table(border="0" cellpadding="0" cellspacing="0" style="width: 100%;")
+	tbody
+		tr
+			td(style="padding: 6px;" align="center")
+				table( border="0" cellpadding="0" cellspacing="0" style="max-width: 696px; width: 100%; background: #ffffff;" background-color="#ffffff")
+					tbody
+						tr
+							td( align="center" style="padding: 5px;")
+								a( href="{{field.data.link|link}}" target="_blank")
+									img(ng-src="{{field.data.url}}" alt="{{field.data.alt}}" style="display: inline-block; max-width: 100%; margin: 0px;")
+				table(border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 696px; height: 2px;")
+					tbody
+						tr
+							td( height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
+						
+div(style="width: 100%; min-height: 40px; text-align: center; margin-bottom: 20px;")
+	a(href="{{field.data.link|link}}" target="_blank") 
+		img(vspace="0" hspace="0" width="215" height="33" src="http://pudra.ru/skins/pudra/mail/email_letter/img/buttons/look_big.png" style="display: inline-block; width:214.5px; height:33px;")

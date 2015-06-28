@@ -1,5 +1,5 @@
 function guiid(){
-	return [1,2,3].map(function(){ return (Math.random()*1000)>>0}).join('-');
+	return [0,0,0,0].map(function(){ return (Math.random()*1000)>>0}).join('-');
 }
 
 function typeCount(type, arr){
@@ -32,6 +32,6 @@ function mapIndex(data){
 	return _.map(data, function(field, i){
 		field.hidden = true;
 		field.index = i;
-		return field;			
+		return field;
 	});
 }
