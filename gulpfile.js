@@ -1,9 +1,9 @@
 /* GULP modules */
 var gulp 		= require('gulp'),
-	bower 		= require('gulp-bower'),
-	less 		= require('gulp-less'),
-	watch 		= require('gulp-watch'),
-	include 	= require('gulp-include');
+		bower 		= require('gulp-bower'),
+		less 		= require('gulp-less'),
+		watch 		= require('gulp-watch'),
+		include 	= require('gulp-include');
 
 /* Misc */
 var	pkg 		= require('./package.json');
@@ -28,39 +28,19 @@ task('less:main', function () {
 		}
 }).
 
-task('less', function(){
-	gulp.run('less:main');
-}).
-
+task('less', ['less:main']).
+task('styles', ['less']).
 
 task("scripts:build", function() {
 	gulp.src(pkg.front + 'static/js/app.js')
 		.pipe( include() )
-		.pipe( gulp.dest(pkg.front + 'static/js/app/'));
+		.pipe( gulp.dest(pkg.front + 'static/js/app/'))
 }).
 
-task('scripts', function(){
-	gulp.run("scripts:build");
-}).
-
-task('styles', function(){
-	gulp.run('less');
-}).
+task('scripts', ["scripts:build"]).
 
 task('default', function() {
-	gulp.
-		watch(pkg.front + 'static/styles/less/**/*.less', function() {  
-			console.log('allahu akbar!');
-    		gulp.run('less');
-		});
-	
-	gulp.
-		watch(pkg.front + 'static/js/modules/**/*.js', function(){
-			gulp.run('scripts:build')
-	});
-
-	gulp.
-		watch(pkg.front + 'static/js/modules/*.js', function(){
-			gulp.run('scripts:build')
-	});	
+	gulp.watch(pkg.front + 'static/styles/less/**/*.less', ['less']);
+	gulp.watch(pkg.front + 'static/js/modules/**/*.js', ['scripts:build']);
+	gulp.watch(pkg.front + 'static/js/modules/*.js', ['scripts:build']);
 });
