@@ -19,9 +19,8 @@ pec.directives.ngpopup = function(){
 						state = false;
 
 				function close() {
-					debugger;
 					state = false;
-					$("body .wrapper").removeClass("distant");
+					$("body .g-wrapper").removeClass("distant");
 					popup.removeClass("open");
 					$timeout(function(){
 							popup.hide();
@@ -36,7 +35,7 @@ pec.directives.ngpopup = function(){
 
 				scope.open = function(data, url){
 					state = true;
-					$("body .wrapper").addClass("distant");
+					$("body .g-wrapper").addClass("distant");
 					scope.contentUrl = url;
 
 					$timeout(function(){
@@ -301,18 +300,6 @@ pec.directives.mainTable = function(){
 	}
 }
 
-pec.directives.etemplate = function () {
-	return function () {
-		return {
-			restrict: 'E',
-			transclude: true,
-			link: function (scope, element, attr) {
-
-			},
-			templateUrl: 'jade/table.tpl'
-		}
-	}
-}
 
 pec.directives.item = function(){
 	return function(){
@@ -325,32 +312,3 @@ pec.directives.item = function(){
 		}
 	}
 }
-
-pec.directives.sizematch = function(){
-	return function(){
-		return {
-			restrict: 'A',
-			link: function(scope, element, attr){
-				pec.functional.sizematch.add($(element));;
-
-			}
-		}
-	}
-}
-
-pec.directives.newTpl = function() {
-  return function(){
-		return {
-	    restrict: 'A',
-	    link: function(scope, elem, attr) {
-				var isNew = attr.newTpl == "true";
-
-				scope.tpl = {
-					name: isNew ? "" : scope.template.name,
-					templates : isNew ? "html"  : scope.template.templates,
-					variables : []
-				};
-			}
-    }
-  };
-};

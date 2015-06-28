@@ -87,17 +87,24 @@ form.b-form--custom-form.b-form(ng-show="fields.length > 0")
             p(ng-click="addOption(field)") Добавить опцию
               
       div(ng-if="field.type == 'radio'")
-        input(type="text", ng-model="field.name", placeholder="Название")
-        div.b-form--values
-          p.heading Опции
+        p.b-control--title Радио-группа
         
-          label(ng-repeat="(key, options) in field.options")
-            input(type="text", ng-model="field.options[key].name", placeholder="Название")
-            input(type="text", ng-model="field.options[key].value", placeholder="Значение")
-            label выбрано?
-              input(type="radio", name="selected[{{field.id}}]", for="selected[{{field.id}}]", ng-model="field.options[key].checked")
-            span(ng-click="removeOption(field, option)") X
+        div
+          input.form-control.b-input--small(type="text", ng-model="field.title", placeholder="Название")
+          input.form-control.b-input--small(type="text", ng-model="field.name", placeholder="Идентификатор")
             
-          p(ng-click="addOption(field)") Добавить опцию
+          div.b-form--options
+            p.heading Опции
+            div.b-form--option(ng-repeat="(key, option) in field.options") 
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].name", placeholder="Название")
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].value", placeholder="Значение")
+              label.b-input.b-input--label Выбрано?
+                input(type="radio",
+                      for="defRadio[{{field.id}}]", 
+                      name="defRadio[{{field.id}}]", 
+                      ng-model="field.options[key].isDefault",
+                      ng-checked="field.options[key].isDefault == true")
+              span.b-form--remove-option.glyphicon.glyphicon-remove(ng-click="removeOption(field, option)")
+            p(ng-click="addOption(field)") Добавить опцию
           
     span.b-control--remove.glyphicon.glyphicon-trash(ng-click="removeField(field)")
