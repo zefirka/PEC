@@ -146,6 +146,20 @@ pec.controllers.editCtrl = function($scope){
 		autosave : false
 	}
 
+	$scope.email = {
+		
+	}
+
+	// $scope.$watch('template', function(n, o){
+	// 	if(n){
+	// 		n.variables.forEach(function(field){
+	// 			for(var name in field){
+	// 					$scope.email[name] = JSON2Fields(field);
+	// 			}
+	// 		});
+	// 	}
+	// })
+
 	$scope.saveFile = function(sielent){
 		pec.api.http.post('fields:save', {
 			sielent: sielent,

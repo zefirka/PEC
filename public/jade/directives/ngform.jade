@@ -1,3 +1,5 @@
+{{email}}
+
 div(ng-show="fields.length == 0")
   p.help-info-block У письма нет переменных
   
@@ -7,7 +9,7 @@ form.b.-form--ngform.b-form(ng-show="fields.length > 0")
       p.b-control--title {{field.title}}
       div
         input.form-control( type="text", 
-                            ng-model="field.name", 
+                            ng-model="email[field.name]", 
                             pattern="{{field.pattern}}",
                             value="{{field['default']}}", 
                             placeholder="{{field.description}}")
