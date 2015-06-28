@@ -203,7 +203,7 @@ pec.http = {};
 		});
 
 		options.sielent = sielent;
-		
+
 		return pec
 			.inject('$http')({
 				method: method.toUpperCase(),
@@ -222,15 +222,6 @@ pec.http = {};
 			});
 	}
 });
-
-
-
-_.mask = function(arr, prop){
-	return _.map(arr, function(field){
-			return field[prop];
-	});
-}
-
 
 function JSON2Fields(field){
 	var res = {};
@@ -256,6 +247,7 @@ function JSON2Fields(field){
 
 	return res
 }
+
 
 pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 	var $cookie = pec.inject("$cookieStore"),
@@ -680,6 +672,12 @@ pec.directives.pecForm = function(){
 				var $parse = pec.inject("$parse");
 				scope.fields = $parse(attr.fields)(scope)
 
+				scope.$watch("template", function(n,o){
+					if(n){
+							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
+					}
+				});
+
 				scope.newField = function(){
 					this.addingNewField = true;
 					this.newFieldType = "text";
@@ -720,7 +718,25 @@ pec.directives.pecForm = function(){
 }
 
 
+pec.directives.ngForm = function(){
+	return function(){
+		return {
+			restrict: 'E',
+			transclude: true,
+			link: function(scope, element, attr){
+				var $parse = pec.inject("$parse");
+				scope.fields = $parse(attr.fields)(scope)
 
+				scope.$watch("template", function(n,o){
+					if(n){
+							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
+					}
+				});
+			},
+			templateUrl: 'jade/directives/ngform.tpl'
+		}
+	}
+}
 
 
 
@@ -834,6 +850,18 @@ pec.filters.link = function(){
     }
 }
 
+pec.filters.JSON2Fields = function(){
+	return function(){
+        return function(json){
+            if(!json){
+							return [];
+						}else{
+							return json.map(JSON2Fields)
+						}
+        }
+    }
+}
+
 
 pec.factories = {};
 
@@ -890,10 +918,10 @@ pec.factories.templates = function(){
               $scope.template = chosen;
               $scope.chooseTpl(chosen, true);
             }
+            $scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
           }
         }
 
-        $scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
         return templates;
 			},
 

@@ -1,68 +1,91 @@
 h3 {{heading}}
-div
-  span.btn(ng-hide="addingNewField", ng-click="newField()") {{message}}
+div(ng-show="fields.length == 0")
+  p.help-info-block У письма нет переменных
+div.b-form--buttons
+  span.b-button.btn.btn-primary(ng-hide="addingNewField", ng-click="newField()") Добавить
   
-div.select(ng-if="addingNewField")
+div.select(ng-show="addingNewField")
   form.b-form.form-horizontal
     .control-group
       label.control-label Выберите тип переменной
     .controls
-      select.input-xlarge(ng-model="newFieldType", value="{{newFieldType}}")
+      select.form-control(ng-model="newFieldType", value="{{newFieldType}}")
         option(value="text") Строка
         option(value="textarea") Текст
         option(value="select") Селектор
         option(value="checkbox") Checkbox
         option(value="radio") Radio
-        
-    span.btn.btn-primary(ng-click="addNewField()") Добавить
-    span.btn.btn-danger(ng-click="collapseAddition()") Отмена
+    
+    div.b-form--buttons
+      span.ok.btn.btn-primary(ng-click="addNewField()") Добавить
+      span.cancle.btn.btn-danger(ng-click="collapseAddition()") Отмена
 
-form.b-form(ng-if="fields.length > 0")
+form.b-form--custom-form.b-form(ng-show="fields.length > 0")
   div.b-control--row(ng-repeat="field in fields")
     
     div.b-control--data
-      div(ng-if="field.type == 'text'")
-        
-        input(type="text", ng-model="field.name", placeholder="Название")
-        input(type="text", ng-model="field.pattern", placeholder="Паттерн переменной")
-        input(type="text", ng-model="field['default']", placeholder="Значение по-умолчанию")
+
+      div(ng-if="field.type == 'text'")        
+        p.b-control--title Строка
+        div.b-control--first_row
+          input.form-control.b-input--large(type="text", ng-model="field.title", placeholder="Название")
+        div
+          input.form-control.b-input.b-input--small(type="text", ng-model="field.name", placeholder="Идентификатор")
+          input.form-control.b-input.b-input--small(type="text", ng-model="field.pattern", placeholder="Паттерн переменной")
+          input.form-control.b-input.b-input--small(type="text", ng-model="field['default']", placeholder="Значение по-умолчанию")
       
       div(ng-if="field.type == 'textarea'")
-        input(type="text", ng-model="field.name", placeholder="Название")
-        input(type="text", ng-model="field.defValue", placeholder="Значение по-умолчанию")
-        label Безопасный HTML
-          input(type="checkbox", ng-model="field.sanitize")
+        p.b-control--title Текстовое поле
+        div.b-control--first_row
+          input.form-control.b-input--large(type="text", ng-model="field.title", placeholder="Название")
+        div
+          input.form-control.b-input.b-input--small(type="text", ng-model="field.name", placeholder="Идентификатор")
+          input.form-control.b-input.b-input--small(type="text", ng-model="field['default']", placeholder="Значение по-умолчанию")
+          label.b-input--label.b-input--small Безопасный HTML
+            input(type="checkbox", ng-model="field.sanitize")
       
       div(ng-if="field.type == 'select'")
-        input(type="text", ng-model="field.name", placeholder="Название")
-        div.b-form--options 
-          p.heading Опции
-          p(ng-repeat="(key, option) in field.options") 
-            input(type="text", ng-model="field.options[key].name", placeholder="Название")
-            input(type="text", ng-model="field.options[key].value", placeholder="Значение")
-            label Выбрать по-умолчанию?
-              input(type="radio", 
-                    for="defRadio[{{field.id}}]", 
-                    name="defRadio[{{field.id}}]", 
-                    ng-model="field.options[key].isDefault",
-                    ng-checked="field.options[key].isDefault == true")
-            span(ng-click="removeOption(field, option)") X
-          p(ng-click="addOption(field)") Добавить опцию
+        p.b-control--title Селектор
+        
+        div
+          input.form-control.b-input--small(type="text", ng-model="field.title", placeholder="Название")
+          input.form-control.b-input--small(type="text", ng-model="field.name", placeholder="Идентификатор")
+          
+          div.b-form--options 
+            p.heading Опции
+            div.b-form--option(ng-repeat="(key, option) in field.options") 
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].name", placeholder="Название")
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].value", placeholder="Значение")
+              label.b-input.b-input--label Выбрано?
+                input(type="radio",
+                      for="defRadio[{{field.id}}]", 
+                      name="defRadio[{{field.id}}]", 
+                      ng-model="field.options[key].isDefault",
+                      ng-checked="field.options[key].isDefault == true")
+              span.b-form--remove-option.glyphicon.glyphicon-remove(ng-click="removeOption(field, option)")
+            p(ng-click="addOption(field)") Добавить опцию
           
       div(ng-if="field.type == 'checkbox'")
-        input(type="text", ng-model="field.name", placeholder="Название")
-        div.b-form--values
-          p.heading Опции
+        p.b-control--title Список опций
         
-          label(ng-repeat="(key, options) in field.options")
-            input(type="text", ng-model="field.options[key].name", placeholder="Название")
-            input(type="text", ng-model="field.options[key].value", placeholder="Значение")
-            label выбрано?
-              input(type="checkbox", ng-model="field.options[key].checked")
-            span(ng-click="removeOption(field, option)") X
+        div
+          input.form-control.b-input--small(type="text", ng-model="field.title", placeholder="Название")
+          input.form-control.b-input--small(type="text", ng-model="field.name", placeholder="Идентификатор")
             
-          p(ng-click="addOption(field)") Добавить опцию
-        
+          div.b-form--options 
+            p.heading Опции
+            div.b-form--option(ng-repeat="(key, option) in field.options") 
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].name", placeholder="Название")
+              input.form-control.b-input.b-input--small(type="text", ng-model="field.options[key].value", placeholder="Значение")
+              label.b-input.b-input--label Выбрано?
+                input(type="checkbox",
+                      for="defRadio[{{field.id}}]", 
+                      name="defRadio[{{field.id}}]", 
+                      ng-model="field.options[key].isDefault",
+                      ng-checked="field.options[key].isDefault == true")
+              span.b-form--remove-option.glyphicon.glyphicon-remove(ng-click="removeOption(field, option)")
+            p(ng-click="addOption(field)") Добавить опцию
+              
       div(ng-if="field.type == 'radio'")
         input(type="text", ng-model="field.name", placeholder="Название")
         div.b-form--values
@@ -77,4 +100,4 @@ form.b-form(ng-if="fields.length > 0")
             
           p(ng-click="addOption(field)") Добавить опцию
           
-    span.b-control--remove(ng-click="removeField(field)") Удалить
+    span.b-control--remove.glyphicon.glyphicon-trash(ng-click="removeField(field)")

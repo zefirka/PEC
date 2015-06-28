@@ -190,6 +190,12 @@ pec.directives.pecForm = function(){
 				var $parse = pec.inject("$parse");
 				scope.fields = $parse(attr.fields)(scope)
 
+				scope.$watch("template", function(n,o){
+					if(n){
+							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
+					}
+				});
+
 				scope.newField = function(){
 					this.addingNewField = true;
 					this.newFieldType = "text";
@@ -230,7 +236,25 @@ pec.directives.pecForm = function(){
 }
 
 
+pec.directives.ngForm = function(){
+	return function(){
+		return {
+			restrict: 'E',
+			transclude: true,
+			link: function(scope, element, attr){
+				var $parse = pec.inject("$parse");
+				scope.fields = $parse(attr.fields)(scope)
 
+				scope.$watch("template", function(n,o){
+					if(n){
+							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
+					}
+				});
+			},
+			templateUrl: 'jade/directives/ngform.tpl'
+		}
+	}
+}
 
 
 

@@ -27,16 +27,17 @@ section(ng-controller="editTemplateCtrl")
       
             p.help-block Выберите формат шаблонов
 
-  pec-form(fields="tpl.variables")
+  section.b-form--subform
+    pec-form(fields="tpl.variables")
 
   section.b-form--errors(ng-if="errors.length > 0")
     h4 Найдены следующие ошибки
     ul
       li(ng-repeat="error in errors") Поле - {{error.field}}, ошибка: "{{error.message}}"
 
-  div
+  div.b-form--about-link
     a(href="#/about") О правилах связывания переменных
   
-  div
-    a(ng-click="onSave()" class="btn btn-primary") Ок
-    a(ng-click="onCancle()" class="btn btn-danger") Закрыть
+  div.b-form--buttons
+    a.ok(ng-click="onSave()" class="btn btn-primary") Ок
+    a.cancle(ng-click="onCancle()" class="btn btn-danger") Закрыть

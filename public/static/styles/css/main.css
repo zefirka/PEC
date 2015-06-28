@@ -80,7 +80,7 @@
   -webkit-filter: blur(10px);
 }
 .new-template .container {
-  width: 600px;
+  width: 640px;
   margin-bottom: 20px;
 }
 .b-form {
@@ -97,6 +97,92 @@
   margin-left: 20px;
   line-height: 21px;
   margin-top: -8px;
+}
+.b-form--buttons {
+  margin-top: 10px;
+}
+.b-form--buttons .ok {
+  margin-right: 15px;
+}
+.b-form--about-link {
+  margin-bottom: 5px;
+}
+.b-form--subform {
+  text-align: left;
+  margin-bottom: 15px;
+}
+.b-form--subform .help-info-block {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  margin-top: -10px;
+}
+.b-form--custom-form {
+  margin-top: 20px;
+}
+.b-form--custom-form .b-control--row {
+  position: relative;
+  padding: 10px 0;
+  border-top: solid 1px #8ed0f5;
+  border-bottom: solid 1px #8ed0f5;
+}
+.b-form--custom-form .b-control--row .b-control--data {
+  white-space: nowrap;
+}
+.b-form--custom-form .b-control--row .b-control--title {
+  font-size: 12px;
+  margin-bottom: 5px;
+  line-height: 14px;
+  color: #444;
+  font-weight: bold;
+}
+.b-form--custom-form .b-control--row .b-control--first_row {
+  margin-bottom: 8px;
+}
+.b-form--custom-form .b-control--row .b-control--remove {
+  position: absolute;
+  top: 38px;
+  right: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.b-form--custom-form .b-control--row .b-form--options {
+  padding: 5px 10px;
+}
+.b-form--custom-form .b-control--row .b-form--options .b-form--option {
+  position: relative;
+  margin-bottom: 8px;
+}
+.b-form--custom-form .b-control--row .b-form--options .b-form--remove-option {
+  position: absolute;
+  top: 10px;
+  right: -5px;
+  cursor: pointer;
+}
+.b-form--custom-form .b-control--row .b-form--options .heading {
+  color: #666;
+  font-size: 12px;
+}
+.b-input--row {
+  margin-bottom: 10px;
+}
+.b-input--small {
+  width: 180px;
+  margin-right: 5px;
+  display: inline-block;
+}
+.b-input--large {
+  width: 360px;
+  margin-right: 5px;
+  display: inline-block;
+}
+.b-input--label {
+  margin-left: 5px;
+}
+.b-input--label input {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
 }
 .b-nav {
   margin-bottom: 10px;
@@ -118,6 +204,15 @@
   display: table-cell;
   padding: 10px 15px;
   cursor: pointer;
+}
+.b-button {
+  cursor: pointer;
+}
+.b-button--add_btn {
+  background: #9f133f;
+  padding: 5px;
+  border-radius: 4px;
+  color: white;
 }
 .b-loading-box {
   position: absolute;

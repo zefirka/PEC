@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .b-form{
   text-align: left;
 
@@ -15,4 +17,83 @@
     margin-top: -8px;
   }
 
+}
+
+.b-form--buttons{
+  margin-top: 10px;
+  .ok{
+    margin-right: 15px;
+  }
+}
+
+.b-form--about-link{
+  margin-bottom: 5px;
+}
+
+.b-form--subform{
+  text-align: left;
+  margin-bottom: 15px;
+
+  .help-info-block{
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+    margin-top: -10px;
+  }
+}
+
+.b-form--custom-form{
+  margin-top: 20px;
+
+  .b-control--row{
+    position: relative;
+    padding: 10px 0;
+    border-top: solid 1px @g-primary-light;
+    border-bottom: solid 1px @g-primary-light;
+
+    .b-control--data{
+      white-space: nowrap;
+    }
+
+    .b-control--title{
+      font-size: 12px;
+      margin-bottom: 5px;
+      line-height: 14px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .b-control--first_row{
+      margin-bottom: 8px;
+    }
+
+    .b-control--remove{
+      position: absolute;
+      top: 38px;
+      right: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .b-form--options{
+      padding: 5px 10px;
+
+      .b-form--option{
+        position: relative;
+        margin-bottom: 8px;
+      }
+
+      .b-form--remove-option{
+        position: absolute;
+        top: 10px;
+        right: -5px;
+        cursor: pointer;
+      }
+
+      .heading{
+        color: #666;
+        font-size: 12px;
+      }
+    }
+  }
 }

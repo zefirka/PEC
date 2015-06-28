@@ -19,7 +19,8 @@ html(lang=language, ng-app="pecApp")
 						li(ng-click="changeTemplate()") Сменить шаблон
 						li(ng-click="editTemplate(false)") Редактировать шаблон
 						li(ng-click="deleteTemplate()") Удалить шаблон
-				p.b-nav--choosen(ng-show="templateIsChosen") Выбран шаблон {{template.name}}
+				p.b-nav--choosen(ng-show="templateIsChosen") Выбран шаблон 
+					strong {{template.name}}
 			include ./templates.jade
 			
 			table.b-editor(main-table="true", ng-show="templateIsChosen", ng-controller="editCtrl")
@@ -57,9 +58,8 @@ html(lang=language, ng-app="pecApp")
 										span.ball.add - добавить
 							section
 								h3 Переменные
-								.gen-data
-									vars(fields="emailFields")
-									
+								ng-form(fields="template.variables")
+																	
 								h3 Advanced
 									.gen-data
 										form.form-horizontal#vars

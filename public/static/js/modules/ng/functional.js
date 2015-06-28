@@ -67,7 +67,7 @@ pec.http = {};
 		});
 
 		options.sielent = sielent;
-		
+
 		return pec
 			.inject('$http')({
 				method: method.toUpperCase(),
@@ -87,10 +87,27 @@ pec.http = {};
 	}
 });
 
+function JSON2Fields(field){
+	var res = {};
 
+	for(var name in field){
+			res.name = name;
+	}
 
-_.mask = function(arr, prop){
-	return _.map(arr, function(field){
-			return field[prop];
-	});
+	field = field[name];
+
+	res.type = field.type;
+
+	if(field.options){
+		res.options = field.options;
+	}
+
+	delete field.options;
+	delete field.type;
+
+	for(var option in field){
+		res[option] = field[option];
+	}
+
+	return res
 }

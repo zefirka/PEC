@@ -53,10 +53,10 @@ pec.factories.templates = function(){
               $scope.template = chosen;
               $scope.chooseTpl(chosen, true);
             }
+            $scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
           }
         }
 
-        $scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
         return templates;
 			},
 
