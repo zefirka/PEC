@@ -1,5 +1,5 @@
 
-### Pudra email constructor
+### Power Email Constructor
 ```
 npm install
 node node/app.js -p=[port_number]
