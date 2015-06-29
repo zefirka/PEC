@@ -1,0 +1,2 @@
+span.to-remove(ng-repeat="(index, field) in fields")
+  span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : field.disabled}" ng-hide="field.disabled")

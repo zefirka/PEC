@@ -1,9 +1,12 @@
 var utils = require('warden.js').Utils;
 
-function userAgentDetector(request){
-	var ua = request.headers['user-agent'],
-		$ = {};
-	
+/*
+		User Agent Detection function.
+		Gets user-agent info from request headers
+*/
+function userAgentDetector(ua){
+	var $ = {};
+
 	if (/mobile/i.test(ua))
 			$.Mobile = true;
 
@@ -24,10 +27,9 @@ function userAgentDetector(request){
 
 	if (/Windows NT/.test(ua))
 			$.Windows = /Windows NT ([0-9\._]+)[\);]/.exec(ua)[1];
-	
+
 	return $;
 }
-
 
 function retrive(url, name, prevent){
 	var last = url.pop();
@@ -39,12 +41,11 @@ function retrive(url, name, prevent){
 }
 
 module.exports = {
-	/* Gets user-agent info from request headers */
 	uaDetect : userAgentDetector,
-	
+
 	/* Takes filename from url to prevent directory */
 	retrive: retrive,
-	
+
 	/* Resolve parent url from dependencies tree */
 	resolveUrl: function(name, deps, debug){
 		var	look = function(obj, prev){
@@ -57,10 +58,10 @@ module.exports = {
 				}
 			}
 		}
-		
+
 		return look(deps, deps[name]);
 	},
-	
+
 	/* Extends object */
 	extend : require('util')._extend
 }

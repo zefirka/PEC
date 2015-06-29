@@ -17,6 +17,7 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 		templates.chooseTemplate(tpl).then(function(){
 			$scope.template = tpl;
 			$cookie.put('template', tpl.name);
+			pec.events.emit("template:ready", $scope.template);
 			if(!popup){
 				pec.events.emit('popup:close');
 			}
@@ -24,6 +25,8 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 	}
 
 	$scope.changeTemplate = function() {
+		$scope.innerButtons = true;
+
 		templates
 			.loadTemplates(true)
 			.then(templates.getTemplates.bind($scope))
@@ -34,7 +37,7 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 					onClose : function(){
 						$scope.templateIsChosen = true;
 					},
-					onCancle : function(next){
+					onCancle : function(a, next){
 						$scope.templateIsChosen = true;
 						next();
 					}
@@ -77,6 +80,7 @@ pec.controllers.editTemplateCtrl = ['$scope', 'templates', function($scope, temp
 	$scope.errors = [];
 
 	$scope.tpl = {
+		id : isNew ? parseInt($scope.template.templates.reduce(maxId).id) + 1 : parseInt($scope.template.id),
 		name: isNew ? "" : $scope.template.name,
 		templates: isNew ? "html" : ($scope.template.templates || "html"),
 		variables: []
@@ -127,16 +131,6 @@ pec.controllers.editTemplateCtrl = ['$scope', 'templates', function($scope, temp
 
 }];
 
-
-
-
-
-
-
-
-
-
-
 pec.controllers.editCtrl = function($scope){
 	var $interval = pec.inject('$interval'),
 			$http = pec.inject('$http'),
@@ -147,18 +141,14 @@ pec.controllers.editCtrl = function($scope){
 	}
 
 	$scope.email = {
-		
+
 	}
 
-	// $scope.$watch('template', function(n, o){
-	// 	if(n){
-	// 		n.variables.forEach(function(field){
-	// 			for(var name in field){
-	// 					$scope.email[name] = JSON2Fields(field);
-	// 			}
-	// 		});
-	// 	}
-	// })
+	$scope.getDefault = function(field) {
+		return field.options.filter(function(option){
+			return option.isDefault
+		})[0].value;
+	}
 
 	$scope.saveFile = function(sielent){
 		pec.api.http.post('fields:save', {
@@ -238,6 +228,5 @@ pec.controllers.editCtrl = function($scope){
 	}
 
 	/* Inits */
-	$scope.switchAutosave();
-	//pec.api.http.get('fields')
+	// $scope.switchAutosave();
 }

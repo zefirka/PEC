@@ -1,31 +1,38 @@
 {{email}}
 
-div(ng-show="fields.length == 0")
+div(ng-show="vars.length == 0")
   p.help-info-block У письма нет переменных
   
-form.b.-form--ngform.b-form(ng-show="fields.length > 0")
-  div.b-control--row(ng-repeat="field in fields")
+form.b.-form--ngform.b-form(ng-show="vars.length > 0")
+  div.b-control--row(ng-repeat="field in vars")
     div(ng-if="field.type == 'text'")        
       p.b-control--title {{field.title}}
       div
         input.form-control( type="text", 
                             ng-model="email[field.name]", 
+                            ng-init="email[field.name] = field['default'] || ''"
                             pattern="{{field.pattern}}",
-                            value="{{field['default']}}", 
                             placeholder="{{field.description}}")
     
     div(ng-if="field.type == 'textarea'")
       p.b-control--title {{field.title}}
       
       div
-        textarea.form-control.b-input(ng-model="field.name", placeholder="{{field.description}}")
+        textarea.form-control.b-input(ng-model="email[field.name]", 
+                                      ng-init="email[field.name] = field['default'] || ''"
+                                      sanitize="field.sanitize"
+                                      placeholder="{{field.description}}")
     
     div(ng-if="field.type == 'select'")
       p.b-control--title {{field.title}}
       
       div
-        select.form-control(type="text", ng-model="field.name")
-          option(ng-repeat="option in field.options", value="option.value", ng-selected="field.isDefault") {{option.name}}
+        select.form-control(type="text", 
+                            ng-model="email[field.name]"
+                            ng-init="email[field.name] = getDefault(field)")
+          option( ng-repeat="option in field.options", 
+                  value="{{option.value}}", 
+                  ng-selected="field.isDefault") {{option.name}}
         
         
     div(ng-if="field.type == 'checkbox'")

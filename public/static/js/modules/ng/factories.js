@@ -2,7 +2,8 @@ pec.factories = {};
 
 pec.factories.templates = function(){
   return function () {
-		var model = {};
+		var model = {},
+        nid;
 
     return {
       validate: function(tpl, scope){
@@ -15,7 +16,8 @@ pec.factories.templates = function(){
           });
         }
 
-        if(!scope.isNewTpl && scope.templates.some(function(t){ return t.name == tpl.name; })){
+        var tplWithSameName = scope.templates.filter(function(t){ return t.name == tpl.name; })[0];
+        if((tplWithSameName && scope.isNewTpl) || (tplWithSameName && tplWithSameName.id !== tpl.id)){
           errs.push({
             field: "Название шаблона",
             message: "Имя " + tpl.name + " уже знаято"
@@ -74,7 +76,7 @@ pec.factories.templates = function(){
 					return pec.http.post('/api?', {
 						action: 'remove',
 						domain: 'templates',
-            template: tpl
+            template: tpl2json(tpl)
 					}).then(function(response){
 						return model = response.data || response;
 					});
@@ -84,7 +86,7 @@ pec.factories.templates = function(){
         return pec.http.post('/api?', {
           action: 'update',
           domain: 'templates',
-          template: tpl,
+          template: tpl2json(tpl),
           name: name
         }).then(function(response){
           return model = response.data || response;
@@ -95,7 +97,7 @@ pec.factories.templates = function(){
 				return pec.http.post('/api?', {
 					action: 'save',
 					domain: 'templates',
-          template : tpl
+          template : tpl2json(tpl)
 				}).then(function(response){
           return model = response.data || response;
         });

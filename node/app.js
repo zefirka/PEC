@@ -6,7 +6,6 @@ var	express 			= require('express'),
 		jade 					= require('jade'),
 		cookieParser 	= require('cookie-parser'),
 		auth 					= require('http-auth'),
-		R 						= require('ramda'),
 		url 					= require('url'),
 		color; 				// inited only in dev mode
 

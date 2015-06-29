@@ -187,11 +187,12 @@ pec.directives.pecForm = function(){
 						optid = 0;
 
 				var $parse = pec.inject("$parse");
+				debugger;
 				scope.fields = $parse(attr.fields)(scope)
 
 				scope.$watch("template", function(n,o){
 					if(n){
-							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
+							scope.fields = $parse(attr.fields)(scope);
 					}
 				});
 
@@ -242,13 +243,11 @@ pec.directives.ngForm = function(){
 			transclude: true,
 			link: function(scope, element, attr){
 				var $parse = pec.inject("$parse");
-				scope.fields = $parse(attr.fields)(scope)
 
-				scope.$watch("template", function(n,o){
-					if(n){
-							scope.fields = $parse(attr.fields)(scope).map(JSON2Fields)
-					}
+				pec.events.listen("template:ready", function(template){
+					scope.vars = template.variables.map(JSON2Fields);
 				});
+
 			},
 			templateUrl: 'jade/directives/ngform.tpl'
 		}
@@ -289,8 +288,8 @@ pec.directives.mainTable = function(){
 				scope.$watch('tablewidth', function(bw){
 					bw = parseInt(bw);
 
-					var cw = table.width(),
-						brw =table.find('.gen-demo').width();
+					var cw 	= table.width(),
+							brw = table.find('.gen-demo').width();
 
 					table.width(cw - brw + bw);
 					table.find('.gen-demo').width(bw);
@@ -301,14 +300,4 @@ pec.directives.mainTable = function(){
 }
 
 
-pec.directives.item = function(){
-	return function(){
-		return {
-			restrict: 'E',
-			transclude: true,
-			link: function(scope, element, attr){
-			},
-			templateUrl: 'jade/item.tpl'
-		}
-	}
-}
+//= include directives/item.js

@@ -35,3 +35,59 @@ function mapIndex(data){
 		return field;
 	});
 }
+
+function JSON2Fields(field){
+	var res = {};
+
+	field = angular.copy(field);
+
+	for(var name in field){
+			if(name != "$$hashKey"){
+				res.name = name;
+			}
+	}
+
+	field = field[res.name];
+
+	res.type = field.type;
+
+	if(field.options){
+		res.options = field.options;
+	}
+
+	delete field.options;
+	delete field.type;
+
+	for(var option in field){
+		res[option] = field[option];
+	}
+
+	return res
+}
+
+function tpl2json(tpl) {
+	var t = angular.copy(tpl);
+	t.variables = t.variables.map(function (field) {
+		var res = {},
+				name = field.name
+
+		res[name] = {};
+
+		field = angular.copy(field);
+
+		delete field.$$hashKey;
+		delete field.name;
+
+		for(var o in field){
+			res[name][o] = field[o];
+		}
+
+		return res;
+
+	});
+	return t;
+}
+
+function maxId(a,b) {
+		return parseInt(a.id) > parseInt(b.id) ? a : b;
+}

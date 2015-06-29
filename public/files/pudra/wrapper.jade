@@ -1,7 +1,7 @@
 table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir="ltr" style="font-size: 16px; width: 100%; background-color: #FBEDF1;" )
 	tbody
 		tr
-			td( width="100%" cellpadding="0" cellspacing="0" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-rigth: 0px; margin-top:0px; margin-bottom: 0px; margin-left: 0px; margin-rigth:0px; background-color:#FBEDF1; background-image: url('{{pattern}}'); font-family: Arial, serif;" background="{{pattern}}")
+			td( width="100%" cellpadding="0" cellspacing="0" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-rigth: 0px; margin-top:0px; margin-bottom: 0px; margin-left: 0px; margin-rigth:0px; background-color:#FBEDF1; background-image: url('http://pudra.ru/{{email.background}}'); font-family: Arial, serif;" background="http://pudra.ru/{{email.background}}")
 			
 				// Шапка
 				
@@ -54,9 +54,8 @@ table(border="0" width="100%" cellpadding="0" cellspacing="0" align="center" dir
 									tbody
 										tr
 											td(height="2" backgound="http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png" style="background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/textures/shadow2x2.png');")
-							
-				span.to-remove(ng-repeat="(index, field) in fields")
-					span.to-remove(ng-include="field.template" ng-class="{'remove-childs' : field.disabled}" ng-hide="field.disabled")
+				
+				pec-blocks
 					
 				// Ленточка: Давай общаться 
 				div(style="height: 40px; width: 100%; margin-top: 25px; margin-bottom: 0px; background-image: url('http://pudra.ru/skins/pudra/mail/email_letter/img/common/ribbon/gray_ribbon_02.png'); text-align: center;")
