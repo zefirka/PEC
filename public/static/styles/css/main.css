@@ -204,6 +204,9 @@
   padding: 10px 15px;
   cursor: pointer;
 }
+.b-nav--editor .btn {
+  margin-right: 10px;
+}
 .b-button {
   cursor: pointer;
 }
@@ -212,6 +215,16 @@
   padding: 5px;
   border-radius: 4px;
   color: white;
+}
+.b-editor-table thead th {
+  padding-bottom: 10px;
+  border-bottom: solid 2px #13609f;
+}
+.b-editor-table tbody td {
+  vertical-align: top;
+}
+.b-editor-table tbody tr:first-child td {
+  padding-top: 10px;
 }
 .b-loading-box {
   position: absolute;

@@ -23,65 +23,68 @@ html(lang=language, ng-app="pecApp")
 					strong {{template.name}}
 			include ./templates.jade
 			
-			table.b-editor(main-table="true", ng-show="templateIsChosen", ng-controller="editCtrl")
-				tr
-					td(colspan="2")
-						.pannel
-							a.btn.btn-primary(ng-click='compile()') Получить код
-							a.btn.btn-warning(ng-click="loadFile()") Загрузить
-							a.btn.btn-success(ng-click="saveFile()") Сохранить
-				tr
-					td.center
-						h2 Настройки
-					td.center(width="{{tablewidth}}")
-						h2 Демо
-				tr
-					td.gen-content
-						#structure
-							section
-								h3(style='margin-top:0px;') Блоки
+			main#b-editor(main-table="true", ng-show="templateIsChosen", ng-controller="editCtrl")
+				section.b-nav--editor
+					a.btn.btn-primary(ng-click='compile()') Скомпилировать
+					a.btn.btn-warning(ng-click="loadFile()") Загрузить макет
+					a.btn.btn-success(ng-click="saveFile()") Сохранить макет					
+				
+				table.b-editor-table
+					thead
+						tr
+							th.center(width="300")
+								h3 Настройки
+							th.center(width="{{tablewidth}}")
+								h3 Просмотр
+					tbody
+						tr
+							td.b-editor--config
+								section.b-editor--blocks
+									h4.no-margin Блоки
 
-								list(fields="fields")
+									list(fields="fields")
 
-								#about.gen-data
-									div
-										span.edit-mark * - отредактированные элементы
-									div
-										span.red-ball
-											span.remove
-											span - удалить элемент из структуры
-									div
-										span.red-ball
-											span.remove.inactive
-											span - вернуть элемент в структуру
-									div
-										span.ball.add - добавить
-							section
-								h3 Переменные
-								ng-form
-																	
-								h3 Advanced
-									.gen-data
-										form.form-horizontal#vars
-											.form-group
-												label.col-sm-2.control-label Автосохранение
-												.col-sm-10(style="text-align:center;")
-													input(type='checkbox' ng-model="settings.autosave" checked="{{settings.autosave}}" ng-change="switchAutosave()")
-													
-								h3 Responsive test
-									.gen-data
-										form.form-horizontal#responsive
-											.form-group
-												label.col-sm-2.control-label Ширина
-												.col-sm-10
-													select.form-control( ng-model='tablewidth' value="{{tablewidth}}")
-														option 960
-														option 768
-														option 480
-														option 320
-														option 1024
+									collapsible(state="false", message="Подсказки")
+										div.b-editor--about-info
+											div
+												span.edit-mark * - отредактированные элементы
+											div
+												span.red-ball
+													span.remove
+													span - удалить элемент из структуры
+											div
+												span.red-ball
+													span.remove.inactive
+													span - вернуть элемент в структуру
+											div
+												span.ball.add - добавить
+												
+								section
+									h3 Переменные
+									ng-form
+																			
+									h3 Advanced
+										.gen-data
+											form.form-horizontal#vars
+												.form-group
+													label.col-sm-2.control-label Автосохранение
+													.col-sm-10(style="text-align:center;")
+														input(type='checkbox' ng-model="settings.autosave" checked="{{settings.autosave}}" ng-change="switchAutosave()")
+														
+									h3 Responsive test
+										.gen-data
+											form.form-horizontal#responsive
+												.form-group
+													label.col-sm-2.control-label Ширина
+													.col-sm-10
+														select.form-control( ng-model='tablewidth' value="{{tablewidth}}")
+															option 960
+															option 768
+															option 480
+															option 320
+															option 1024
 
-					td.gen-demo(width="{{tablewidth}}" letter)
-						div#main-table(ng-include="templateUrl")
+							td.gen-demo(width="{{tablewidth}}" letter)
+								div#main-table(ng-include="templateUrl")
 
 		ngpopup

@@ -16,6 +16,7 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 		$scope.templateIsChosen = true;
 		templates.chooseTemplate(tpl).then(function(){
 			$scope.template = tpl;
+			$scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
 			$cookie.put('template', tpl.name);
 			pec.events.emit("template:ready", $scope.template);
 			if(!popup){
@@ -80,7 +81,7 @@ pec.controllers.editTemplateCtrl = ['$scope', 'templates', function($scope, temp
 	$scope.errors = [];
 
 	$scope.tpl = {
-		id : isNew ? parseInt($scope.template.templates.reduce(maxId).id) + 1 : parseInt($scope.template.id),
+		id : isNew ? parseInt($scope.templates.reduce(maxId).id) + 1 : parseInt($scope.template.id),
 		name: isNew ? "" : $scope.template.name,
 		templates: isNew ? "html" : ($scope.template.templates || "html"),
 		variables: []

@@ -201,6 +201,12 @@ pec.directives.pecForm = function(){
 					this.newFieldType = "text";
 				}
 
+				scope.removeField = function (field) {
+					scope.fields = scope.fields.filter(function (f) {
+						return f.id !== field.id;
+					})
+				}
+
 				scope.collapseAddition = function(){
 					this.addingNewField = false;
 					this.newFieldType = "text";
