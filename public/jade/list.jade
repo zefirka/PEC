@@ -1,2 +1,3 @@
-ul#sortable.gen-list
-	item.sortable-item(ng-repeat="(index, field) in fields" field="field")
+.b-blocks
+	ul#sortable.b-clocks--list.b-blocks--sortable
+		item(ng-repeat="(index, block) in blocks" block="block" sortable="true")

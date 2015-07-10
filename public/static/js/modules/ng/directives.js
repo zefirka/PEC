@@ -81,11 +81,32 @@ pec.directives.ngpopup = function(){
 	}
 }
 
+
+pec.directives.pecBlocks = function () {
+	return function () {
+		return {
+			restrict: 'E',
+			transclude: true,
+			link: function (scope, element, attr) {
+				debugger;
+			},
+			templateUrl : 'jade/directives/blocks.tpl'
+		}
+	}
+}
+
 pec.directives.letter = function(){
 	return function(){
 		return {
 			restrict: 'A',
 			link: function(scope, element, attr){
+				var $compile = pec.inject('$compile');
+
+				pec.events.listen('email:change', function(e){
+					debugger;
+					$compile(element)(scope)
+				})
+
 				scope.compile = function(){
 					$(".builder").append($(element).html());
 					var ft = $(".builder").children();
@@ -176,6 +197,58 @@ pec.directives.preloader = function(){
 	}
 }
 
+pec.directives.swipeMenu = function(){
+	return function(){
+		return {
+			restrict: 'A',
+			transclude: false,
+			link: function(scope, element, attr){
+				var $el = $(element),
+						$ul = $el.find(".js-list"),
+						$ico = $el.find(".js-rotate");
+
+				function hide() {
+					$ul.animate({
+						"width":  0,
+						"letter-spacing": -1
+					}, 200);
+					$ul.find('li').animate({
+						padding: 0
+					}, 200)
+				}
+
+				function show() {
+					$ul.animate({
+						"width":  "100%",
+						"letter-spacing": 0
+					}, 200);
+					$ul.find('li').animate({
+						padding: "10px 15px"
+					}, 200)
+				}
+
+
+
+				scope.menu = {
+					state : attr.swipeMenu == "false"
+				}
+
+
+
+				$ico.click(function(){
+					scope.menu.state = !scope.menu.state;
+					if(scope.menu.state){
+						show()
+					}else{
+						hide()
+					}
+					scope.$apply();
+				});
+
+			}
+		}
+	}
+}
 
 pec.directives.pecForm = function(){
 	return function(){
@@ -305,5 +378,25 @@ pec.directives.mainTable = function(){
 	}
 }
 
+
+pec.directives.ngCollapsible = function(){
+	return function(){
+		return {
+			restrict: 'A',
+			transclude: false,
+			link: function(scope, element, attr){
+				var $el = $(element),
+						$ico = $el.find('.js-ico'),
+						$pane = $el.find('.js-pane');
+
+				$ico.click(function() {
+					$pane.slideToggle();
+					$ico.toggleClass("__up__");
+				});
+
+			}
+		}
+	}
+}
 
 //= include directives/item.js

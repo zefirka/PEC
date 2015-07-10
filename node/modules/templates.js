@@ -1,9 +1,11 @@
-var	jsonfile      = require('jsonfile'),
+var	fs 			 			= require('fs'),
+		jsonfile      = require('jsonfile'),
 		R 						= require('ramda'),
 		config 				= require('../config/config.js');
 
 var templates = {},
-    fileName = __dirname + "/../" + config.files + "templates.json";
+    fileName = __dirname + "/../" + config.files + "templates.json",
+		defaultWrapper = __dirname + "/../../public/jade/template/defaultWrapper."
 
 function exist(name){
 	return function(array){
@@ -23,24 +25,43 @@ function max(){
 	}).id);
 }
 
+function check(err){
+	if(err){
+		console.log(err);
+	}
+}
+
 module.exports = {
+
+	/* GET: load */
   load: function(response, next) {
 		jsonfile.readFile(fileName, function(err, obj) {
-		  if(err){
-				console.log(err);
-			}
+			check(err);
+
 			templates = obj;
 			response.send(templates);
 			next();
 		});
   },
 
+	/* POST: creat new template wrapper */
+	createTemplateWrapper : function (params, callback) {
+		var template = JSON.parse(params.template),
+				file = __dirname + "/../../public/files/" + template.name + "/wrapper." + template.templates
+
+		fs.createReadStream(defaultWrapper + template.templates)
+			.pipe(fs.createWriteStream(file))
+			.on("close", function(e){
+				callback();
+			});
+	},
+
   save: function (params, callback) {
-    var templ = JSON.parse(params.template),
+    var tpl = JSON.parse(params.template),
 				name = tpl.name;
 
 		/* If name exists then we'r updating */
-    var isUpdate = exist(tpl.name)(templates);
+    var isUpdate = exist(name)(templates);
 
     if(isUpdate){
 			templates = mask(name, tpl)(templates);
@@ -69,14 +90,18 @@ module.exports = {
   },
 
   choose: function (params, callback) {
-    return callback(params.template);
+    var template = JSON.parse(params.template);
+				blocks = jsonfile.readFileSync(__dirname + "/../" + config.files + template.name + "/blocks.json");
+
+		return callback({
+			template: template,
+			blocks : blocks
+		});
   },
 
   write : function(callback){
     jsonfile.writeFile(fileName, templates, function (err) {
-      if(err){
-				console.error(err);
-			}
+      check(err);
 
 			/* Sending templates */
 			callback(templates);

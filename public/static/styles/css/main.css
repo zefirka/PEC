@@ -171,7 +171,7 @@
   display: inline-block;
 }
 .b-input--large {
-  width: 360px;
+  width: 366px;
   margin-right: 5px;
   display: inline-block;
 }
@@ -186,23 +186,57 @@
 .b-nav {
   margin-bottom: 10px;
   border-bottom: solid 1px #13609f;
+  position: relative;
 }
 .b-nav .b-nav--choosen {
-  font-size: 10px;
+  font-size: 12px;
   color: #666;
   padding-left: 15px;
   margin-bottom: 5px;
+  position: absolute;
+  top: 3px;
 }
-.b-nav .b-nav-list ul {
+.b-nav nav {
+  height: 40px;
+  text-align: right;
+}
+.b-nav .b-nav--icon {
+  position: absolute;
+  transition: transform 250ms;
+  top: 0px;
+  right: -2px;
+  font-size: 28px;
+  z-index: 2;
+}
+.b-nav .b-nav--icon.rotated {
+  -ms-transform: rotate(45deg);
+  /* IE 9 */
+  -webkit-transform: rotate(45deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+}
+.b-nav .b-nav-list {
   padding: 0;
   margin: 0;
+  overflow: hidden;
   display: table;
   width: 100%;
+  position: relative;
+  top: -8px;
+  text-align: center;
 }
-.b-nav .b-nav-list ul li {
+.b-nav .b-nav-list li {
   display: table-cell;
   padding: 10px 15px;
   cursor: pointer;
+  white-space: nowrap;
+}
+.b-nav .b-nav--collapsed .b-nav-list {
+  display: inline-block;
+  white-space: nowrap;
+}
+.b-nav .b-nav--collapsed .b-nav-list li {
+  display: inline-block;
 }
 .b-nav--editor .btn {
   margin-right: 10px;
@@ -225,6 +259,22 @@
 }
 .b-editor-table tbody tr:first-child td {
   padding-top: 10px;
+}
+.b-editor--info .js-ico {
+  position: relative;
+  transition: transform 250ms;
+  top: 3px;
+  right: -8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.b-editor--info .js-ico.__up__ {
+  top: 1px;
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
 }
 .b-loading-box {
   position: absolute;

@@ -36,6 +36,17 @@ pec.factories.templates = function(){
 				});
 			},
 
+      createWrapper: function (tpl) {
+        return pec.http.post("/api?", {
+          action: 'createTemplateWrapper',
+					domain: 'templates',
+          template: tpl
+        }).then(function (e) {
+          debugger;
+          pec.events.emit('email:change', e);
+        })
+      },
+
       getTemplates: function(templates, updated) {
         var defTpl = pec.inject("$cookieStore").get('template'),
             chosen = null,

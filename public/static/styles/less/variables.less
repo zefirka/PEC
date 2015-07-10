@@ -28,3 +28,10 @@
 
 @btn-secondary: @g-primary;
 @btn-secondary-color: white;
+
+
+.rotation(@degrees) {
+  -ms-transform: rotate(@degrees); /* IE 9 */
+  -webkit-transform: rotate(@degrees); /* Chrome, Safari, Opera */
+  transform: rotate(@degrees);
+}

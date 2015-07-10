@@ -120,7 +120,7 @@ app.post('/api?*', function (req, res, next) {
 
 		if(params.action == "choose"){
 			callback = function(response){
-				CHOOSEN = JSON.parse(response);
+				CHOOSEN = response.template;
 				res.send(response);
 				next();
 			}
@@ -144,22 +144,26 @@ app.get('/*.tpl', function (req, res, next) {
 			model,
 			data,
 			engine = config.tplEngine,
-			file;
+			file,
+			tpl__vars = {template : CHOOSEN && CHOOSEN.name};
 
 	if(url[0] == 'files'){
 		engine = CHOOSEN.templates;
 		file = config.root + originalUrl + '.' + engine;
 
-		console.log("SEARCHING", file);
+		console.log("SEARCHING", file, name);
+
 		fs.stat(file, function(err){
 			if(err){
-				res.render('pages/404.' + config.tplEngine);
+
+				res.render('errors/' + name + "." + config.tplEngine, tpl__vars);
+
 			}else{
 				if(engine == "jade"){
-					res.render(file);
+					res.render(file, tpl__vars);
 				}else{
 					fs.readFile(file, {encoding: 'utf-8'}, function(err, data){
-						res.send(data);
+						res.send(utils.interpolate(data, tpl__vars));
 						next();
 					});
 				}

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "0",
+    "template" : "test",
+    "name": "text",
+    "variables" : [
+      {
+        "text" : {
+          "type" : "textarea",
+          "default" : "",
+          "description" : "Текст",
+          "sanitize": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "template" : "test",
+    "name": "hello",
+    "variables" : [
+      {
+        "text" : {
+          "type" : "textarea",
+          "default" : "",
+          "description" : "Приветствие"
+        }
+      }
+    ]
+  }
+]

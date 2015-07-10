@@ -1,6 +1,32 @@
 'use strict';
 var App = angular.module('pecApp',['ngRoute', 'ngSanitize', 'ngCookies'], function($routeProvider, $compileProvider){
 	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|callto):/);
+	// 
+	// for(var pageName in pec.routes){
+  //   	var route = pec.routes[pageName],
+	// 		tpl = route.tpl,
+	// 		page = route.route,
+	// 		templateUrl = pec.static + tpl;
+	//
+	// 	if(typeof page !== 'object'){
+	// 		page = [page];
+	// 	}
+	//
+	// 	page.forEach(function(pagen){
+	// 		$routeProvider.when("/" + pagen, {
+	// 			templateUrl: templateUrl,
+	// 			controller: pec.getController(route),
+	// 			pageName: page
+	// 		});
+	// 	});
+	// }
+	//
+	// $routeProvider.when("/", {
+	// 	redirectTo: "/home"
+	// }).otherwise({
+	// 	redirectTo: "/404"
+	// });
+
 }).run();
 
 (function(app){

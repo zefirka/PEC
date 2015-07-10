@@ -11,24 +11,27 @@ html(lang=language, ng-app="pecApp")
 			header
 				h1!=title
 				hr
-			
-			section.b-nav 
-				nav.b-nav-list(ng-show="templateIsChosen")
-					ul
+
+			section.b-nav
+				nav(ng-show="templateIsChosen", ng-class="{ 'b-nav--collapsed': !menu.state }" swipe-menu="false")
+					span.js-rotate.b-nav--icon.glyphicon.glyphicon-th-large(ng-class="{rotated : menu.state}")
+					ul.b-nav-list.js-list
 						li(ng-click="editTemplate(true)") Новый шаблон
 						li(ng-click="changeTemplate()") Сменить шаблон
 						li(ng-click="editTemplate(false)") Редактировать шаблон
 						li(ng-click="deleteTemplate()") Удалить шаблон
-				p.b-nav--choosen(ng-show="templateIsChosen") Выбран шаблон 
+
+				p.b-nav--choosen(ng-show="templateIsChosen && !menu.state") Выбран шаблон
 					strong {{template.name}}
-			include ./templates.jade
 			
+			include ./templates.jade
+
 			main#b-editor(main-table="true", ng-show="templateIsChosen", ng-controller="editCtrl")
 				section.b-nav--editor
 					a.btn.btn-primary(ng-click='compile()') Скомпилировать
 					a.btn.btn-warning(ng-click="loadFile()") Загрузить макет
-					a.btn.btn-success(ng-click="saveFile()") Сохранить макет					
-				
+					a.btn.btn-success(ng-click="saveFile()") Сохранить макет
+
 				table.b-editor-table
 					thead
 						tr
@@ -39,30 +42,33 @@ html(lang=language, ng-app="pecApp")
 					tbody
 						tr
 							td.b-editor--config
+
 								section.b-editor--blocks
 									h4.no-margin Блоки
 
-									list(fields="fields")
-
-									collapsible(state="false", message="Подсказки")
-										div.b-editor--about-info
+									list(fields="blocks")
+									
+								section.b-editor--info(ng-collapsible)
+										h4 Подсказки
+											i.glyphicon.glyphicon-chevron-down.js-ico.__up__
+										div.b-editor--about-info.js-pane
 											div
 												span.edit-mark * - отредактированные элементы
 											div
 												span.red-ball
-													span.remove
+												span.remove
 													span - удалить элемент из структуры
 											div
 												span.red-ball
-													span.remove.inactive
-													span - вернуть элемент в структуру
+												span.remove.inactive
+												span - вернуть элемент в структуру
 											div
 												span.ball.add - добавить
-												
+
 								section
 									h3 Переменные
 									ng-form
-																			
+
 									h3 Advanced
 										.gen-data
 											form.form-horizontal#vars
@@ -70,8 +76,8 @@ html(lang=language, ng-app="pecApp")
 													label.col-sm-2.control-label Автосохранение
 													.col-sm-10(style="text-align:center;")
 														input(type='checkbox' ng-model="settings.autosave" checked="{{settings.autosave}}" ng-change="switchAutosave()")
-														
-									h3 Responsive test
+
+									h3 Адативный тест
 										.gen-data
 											form.form-horizontal#responsive
 												.form-group
@@ -86,5 +92,6 @@ html(lang=language, ng-app="pecApp")
 
 							td.gen-demo(width="{{tablewidth}}" letter)
 								div#main-table(ng-include="templateUrl")
+
 
 		ngpopup

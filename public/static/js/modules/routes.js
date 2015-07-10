@@ -1,12 +1,12 @@
 pec.routes = {
 	home : {
 		route : ['/', '', 'home'],
-		tpl : 'core.tpl'
+		tpl : 'pages/dashboard.tpl'
 	},
 
-	templates: {
-		route: ["/templates", "templates"],
-		tpl: 'templates.tpl'
+	about: {
+		route: ["/about", "about"],
+		tpl: 'pages/about.tpl'
 	},
 
 	'404' : {

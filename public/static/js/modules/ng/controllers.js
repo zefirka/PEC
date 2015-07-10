@@ -12,9 +12,15 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 		.loadTemplates()
 		.then(templates.getTemplates.bind($scope));
 
+	$scope.createTemplateWrapper = function () {
+		debugger;
+		templates.createWrapper($scope.template);
+	}
+
 	$scope.chooseTpl = function (tpl, popup) {
 		$scope.templateIsChosen = true;
-		templates.chooseTemplate(tpl).then(function(){
+		templates.chooseTemplate(tpl).then(function(response){
+			$scope.blocks = response.blocks;
 			$scope.template = tpl;
 			$scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
 			$cookie.put('template', tpl.name);

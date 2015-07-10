@@ -12,9 +12,26 @@
     td{
       vertical-align: top;
     }
-    
+
     tr:first-child td{
       padding-top:10px;
     }
+  }
+}
+
+
+.b-editor--info{
+  .js-ico{
+    &.__up__{
+      top:1px;
+      .rotation(180deg);
+    }
+
+    position: relative;
+    transition: transform 250ms;
+    top: 3px;
+    right: -8px;
+    cursor: pointer;
+    font-size: 16px;
   }
 }

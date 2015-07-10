@@ -1,9 +1,8 @@
 [
   {
     "id": "0",
+    "template" : "pudra",
     "name": "text",
-    "fixed" : false,
-    "unique" : false,
     "variables" : [
       {
         "text" : {
