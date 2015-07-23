@@ -1,0 +1,5 @@
+section(ng-hide="templateIsChosen")
+  ul.b-list.b-list--templates
+    li(ng-repeat="tpl in templates")
+      a(ng-click="chooseTpl(tpl)") {{tpl.name}}  
+      span (#{lang.changed} {{tpl.modified | date}})

@@ -1,51 +1,60 @@
 pec.factories = {};
 
 pec.factories.templates = function(){
+  var API = "/templates?";
+
   return function () {
-		var model = {},
+    var model = {},
         nid;
 
+    function saveModel(response){
+      return model = response.data || response;
+    }
+
+    function validate(tpl, scope){
+      var errs = [];
+
+      if(!/[A-Za-z][A-Za-z0-9]+/.test(tpl.name)){
+        errs.push({
+          field: "Название шаблона",
+          message: "Недопустимое имя"
+        });
+      }
+
+      var tplWithSameName = scope.templates.filter(function(t){ return t.name == tpl.name; })[0];
+      if((tplWithSameName && scope.isNewTpl) || (tplWithSameName && tplWithSameName.id !== tpl.id)){
+        errs.push({
+          field: "Название шаблона",
+          message: "Имя " + tpl.name + " уже знаято"
+        });
+      }
+
+      return errs;
+    }
+
+
     return {
-      validate: function(tpl, scope){
-        var errs = [];
+      validate: validate,
 
-        if(!/[A-Za-z][A-Za-z0-9]+/.test(tpl.name)){
-          errs.push({
-            field: "Название шаблона",
-            message: "Недопустимое имя"
-          });
-        }
-
-        var tplWithSameName = scope.templates.filter(function(t){ return t.name == tpl.name; })[0];
-        if((tplWithSameName && scope.isNewTpl) || (tplWithSameName && tplWithSameName.id !== tpl.id)){
-          errs.push({
-            field: "Название шаблона",
-            message: "Имя " + tpl.name + " уже знаято"
-          });
-        }
-
-        return errs;
+      loadTemplates: function(sielent) {
+        return pec.http.post(API, {
+          params: {
+            action: 'load'
+          },
+          sielent: sielent
+        }).then(saveModel);
       },
 
-			loadTemplates: function(sielent) {
-				return pec.http.get('/api?', {
-					action: 'load',
-					domain: 'templates'
-				}, sielent).then(function(response){
-					return model = response.data || response
-				});
-			},
-
-      createWrapper: function (tpl) {
-        return pec.http.post("/api?", {
-          action: 'createTemplateWrapper',
-					domain: 'templates',
-          template: tpl
-        }).then(function (e) {
-          debugger;
-          pec.events.emit('email:change', e);
-        })
-      },
+      // createWrapper: function (tpl) {
+      //   return pec.http.post("/api?", {
+      //     action: 'createTemplateWrapper',
+      //     domain: 'templates',
+      //     template: tpl
+      //   }).then(function (e) {
+      //     debugger;
+      //     pec.events.emit('email:change', e);
+      //   })
+      // },
 
       getTemplates: function(templates, updated) {
         var defTpl = pec.inject("$cookieStore").get('template'),
@@ -71,48 +80,55 @@ pec.factories.templates = function(){
         }
 
         return templates;
-			},
-
-			chooseTemplate: function(tpl){
-				return pec.http.post('/api?', {
-					action: 'choose',
-					domain: 'templates',
-					template: tpl
-				}, true).then(function(response){
-					return model = response.data || response;
-				});
-			},
-
-			removeTemplate : function(tpl){
-					return pec.http.post('/api?', {
-						action: 'remove',
-						domain: 'templates',
-            template: tpl2json(tpl)
-					}).then(function(response){
-						return model = response.data || response;
-					});
-			},
-
-      updateTemplate: function(tpl, name) {
-        return pec.http.post('/api?', {
-          action: 'update',
-          domain: 'templates',
-          template: tpl2json(tpl),
-          name: name
-        }).then(function(response){
-          return model = response.data || response;
-        })
       },
 
-			saveTemplate: function(tpl) {
-				return pec.http.post('/api?', {
-					action: 'save',
-					domain: 'templates',
-          template : tpl2json(tpl)
-				}).then(function(response){
-          return model = response.data || response;
-        });
-			}
+      chooseTemplate: function(tpl){
+        return pec.http.post(API, {
+          params: {
+            action: 'choose',
+            template: tpl },
+          sielent : true
+        }).then(saveModel);
+      },
+
+      removeTemplate : function(tpl){
+          return pec.http.post(API, {
+            data: {
+              action: 'remove',
+              domain: 'templates',
+              template: tpl2json(tpl) },
+            sielent: false
+          }).then(saveModel);
+      },
+
+      updateTemplate: function(tpl, name) {
+        return pec.http.post(API, {
+          data: {
+            action: 'update',
+            domain: 'templates',
+            template: tpl2json(tpl),
+            name: name },
+          transformRequest: pec.transforms.file,
+          headers: {
+            'Content-Type': void 0
+          },
+          sielent: false
+        }).then(saveModel)
+      },
+
+      saveTemplate: function(tpl) {
+        return pec.http.post(API, {
+          data: {
+            action: 'save',
+            domain: 'templates',
+            template : tpl2json(tpl) },
+          transformRequest: pec.transforms.file,
+          headers: {
+            'Content-Type': undefined
+          },
+          sielent : false
+        }).then(saveModel);
+      }
     };
   };
 };

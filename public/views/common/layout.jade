@@ -1,0 +1,18 @@
+doctype html
+block vars
+	- var language = locals.language;
+
+block root
+	html(lang=language, ng-app=(app!=undefined ? '#{app}' : false))
+		block head
+			head
+				title!=title
+		body(sizematch=ngSizematch===true, ng-controller=(ctrl !==undefined ? '#{ctrl}' : false))
+			block overlays
+				
+			.g-wrapper(main-wrapper)
+				block menu
+					include ./header.jade
+				block content
+					p content					
+			block footer

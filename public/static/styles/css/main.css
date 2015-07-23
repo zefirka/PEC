@@ -1,11 +1,6 @@
 /* Buttons */
-.g-wrapper {
-  border-right: solid 10px #13609f;
-  border-left: solid 10px #13609f;
-  display: inline-block;
-  text-align: left;
+.g-wrapper .container {
   background-color: rgba(255, 255, 255, 0.92);
-  padding: 0 20px;
 }
 .overlap-manager {
   background: rgba(0, 0, 0, 0.6);
@@ -183,12 +178,22 @@
   position: relative;
   top: 2px;
 }
+.b-list--templates {
+  padding: 0;
+  margin: 0;
+}
 .b-nav {
-  margin-bottom: 10px;
-  border-bottom: solid 1px #13609f;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   position: relative;
 }
-.b-nav .b-nav--choosen {
+.b-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bababa .b-nav--choosen {
   font-size: 12px;
   color: #666;
   padding-left: 15px;
@@ -196,11 +201,11 @@
   position: absolute;
   top: 3px;
 }
-.b-nav nav {
+.bababa nav {
   height: 40px;
   text-align: right;
 }
-.b-nav .b-nav--icon {
+.bababa .b-nav--icon {
   position: absolute;
   transition: transform 250ms;
   top: 0px;
@@ -208,14 +213,14 @@
   font-size: 28px;
   z-index: 2;
 }
-.b-nav .b-nav--icon.rotated {
+.bababa .b-nav--icon.rotated {
   -ms-transform: rotate(45deg);
   /* IE 9 */
   -webkit-transform: rotate(45deg);
   /* Chrome, Safari, Opera */
   transform: rotate(45deg);
 }
-.b-nav .b-nav-list {
+.bababa .b-nav-list {
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -225,30 +230,85 @@
   top: -8px;
   text-align: center;
 }
-.b-nav .b-nav-list li {
+.bababa .b-nav-list li {
   display: table-cell;
   padding: 10px 15px;
   cursor: pointer;
   white-space: nowrap;
 }
-.b-nav .b-nav--collapsed .b-nav-list {
+.bababa .b-nav--collapsed .b-nav-list {
   display: inline-block;
   white-space: nowrap;
 }
-.b-nav .b-nav--collapsed .b-nav-list li {
+.bababa .b-nav--collapsed .b-nav-list li {
   display: inline-block;
 }
 .b-nav--editor .btn {
   margin-right: 10px;
 }
+.b-nav--templates {
+  text-align: left;
+}
+.b-nav--templates li {
+  padding: 10px 5px;
+}
+.b-nav--templates li .b-button {
+  display: inline-block;
+  width: 100%;
+}
+.b-nav--main {
+  border-top: solid 1px #13609f;
+  position: relative;
+  margin-bottom: 20px;
+}
+.b-nav--main li {
+  text-align: center;
+  padding: 10px 0;
+  background: #8ed0f5;
+}
+.g-xs .b-nav--main {
+  margin-top: 10px;
+}
 .b-button {
   cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  background: #b3c7c8;
+  white-space: nowrap;
+}
+.b-button:hover {
+  text-decoration: none;
+  color: white;
+  background: #a1b3b4;
+}
+.b-button a {
+  text-decoration: none;
+}
+.b-button a:hover {
+  color: white;
+  text-decoration: none;
+}
+.b-button--primary {
+  background: #13609f;
+}
+.b-button--primary:hover {
+  background: #0e4471;
 }
 .b-button--add_btn {
   background: #9f133f;
   padding: 5px;
   border-radius: 4px;
   color: white;
+}
+.b-button--change {
+  background: #b8b45a;
+}
+.b-button--change:hover {
+  background: #a88f3a;
 }
 .b-editor-table thead th {
   padding-bottom: 10px;
@@ -295,8 +355,10 @@
   position: relative;
   background: url('../../img/spinner.gif');
 }
+.b-templates {
+  margin-bottom: 20px;
+}
 body {
-  text-align: center;
   background-color: #8ed0f5;
 }
 ul {

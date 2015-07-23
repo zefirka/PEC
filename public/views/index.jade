@@ -1,0 +1,13 @@
+extends ./common/layout.jade
+
+block vars
+	- var language = locals.language;
+	- var app = "pecApp";
+	- var ngSizematch = true;
+
+block head 
+	include ./common/head.jade
+
+block content
+	preloader(class="g-wrapper", speed="700", timeout="1000", init="false")
+	div.g-view(ng-view)

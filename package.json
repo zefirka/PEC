@@ -32,9 +32,8 @@
     "colors": "^1.0.3",
     "gulp": "^3.8.10",
     "gulp-bower": "0.0.7",
-    "gulp-include": "^1.1.0",
-    "gulp-less": "^2.0.1",
-    "gulp-watch": "^3.0.0"
+    "gulp-include": "latest",
+    "gulp-less": "^2.0.1"
   },
   "front": "./public/",
   "files": "./files",

@@ -2,6 +2,35 @@
 
 .b-button{
   cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  background: @btn;
+  white-space: nowrap;
+
+  &:hover{
+    text-decoration: none;
+    color: white;
+    background: @btn-hover;
+  }
+
+  a{
+    text-decoration: none;
+  }
+  a:hover{
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.b-button--primary{
+  background: @g-primary;
+  &:hover {
+    background: darken(@g-primary, 10%);
+  }
 }
 
 .b-button--add_btn{
@@ -9,4 +38,11 @@
   padding: 5px;
   border-radius: 4px;
   color: white;
+}
+
+.b-button--change{
+  background: #b8b45a;
+  &:hover{
+    background: #a88f3a;
+  }
 }

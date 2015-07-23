@@ -2,7 +2,10 @@
 
 	var _ = Warden.Utils;
 	var pec = {
-		static : 'public/static/jade/',
+		consts : {
+			$window: $(window)
+		},
+		static : 'views/',
 		bootstrap : Bootstrap,
 		routes: {},
 		functional : {},
@@ -10,7 +13,8 @@
 		events: Warden({}),
 		controllers : {},
 		directives : {},
-		filters : {}
+		filters : {},
+		transforms : {}
 
 	}
 
@@ -28,7 +32,9 @@
 	//= include modules/ng/directives.js
 	//= include modules/ng/filters.js
 	//= include modules/ng/factories.js
+	//= include modules/ng/transforms.js
 
 
 	root.pec = pec;
+	root._ = _;
 })(this);

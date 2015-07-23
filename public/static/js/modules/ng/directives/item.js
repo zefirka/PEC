@@ -5,7 +5,7 @@ pec.directives.item = function(){
 			transclude: true,
 			link: function(scope, element, attr){
 			},
-			templateUrl: 'jade/item.tpl'
+			templateUrl: 'views/item.tpl'
 		}
 	}
 }

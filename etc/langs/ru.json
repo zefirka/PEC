@@ -1,0 +1,21 @@
+{
+	"common" : {
+		"about" : "О нас",
+		"api" : "API",
+
+		"dashboard" : "Панель",
+		"index" : "Главная",
+
+		"template" : "Шаблон"
+	},
+
+	"dashboard" : {
+		"new_template" : "Новый шаблон",
+		"change" : "Сменить",
+		"edit" : "Редактировать",
+		"delete" : "Удалить",
+		"choose_template" : "Выберите шаблон",
+		"choosen_template" : "Выбран шаблон",
+		"changed" : "Изменен"
+	}
+}

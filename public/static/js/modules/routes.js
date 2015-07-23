@@ -1,12 +1,19 @@
 pec.routes = {
 	home : {
 		route : ['/', '', 'home'],
-		tpl : 'pages/dashboard.tpl'
+		tpl : 'pages/static/index.tpl',
+		controller : 'indexCtrl',
 	},
 
-	about: {
-		route: ["/about", "about"],
-		tpl: 'pages/about.tpl'
+	dashboard: {
+		route: ["/dashboard", "dashboard"],
+		tpl: 'dashboard/dashboard.tpl',
+		controller : 'mainCtrl',
+	},
+
+	constructor: {
+		route: ['dashboard/email'],
+		tpl: 'dashboard/constructor.tpl'
 	},
 
 	'404' : {

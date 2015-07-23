@@ -6,9 +6,7 @@ module.exports = {
   port : 3002,
   default_file : null, //default loading file
 
-  /* Language configs */
-  deflang : 'en', //default language
-  lang: 'en', //current language
+  language: 'ru', //language
 
   /* Meta tags */
   meta : {
@@ -24,7 +22,7 @@ module.exports = {
 
   tplEngine : 'jade', // template engine
 
-  views  : "jade/",
+  views  : "views/",
   files : "../public/files/",
 
 
@@ -43,6 +41,13 @@ module.exports = {
     scripts: "js/" ,
     styles: "styles/css",
   },
+
+  defaults : {
+    lang: 'en',
+    template: 'default'
+  },
+
+  env: 'dev',
 
   /* Development */
   dev : {

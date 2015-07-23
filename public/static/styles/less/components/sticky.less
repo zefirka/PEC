@@ -1,0 +1,26 @@
+@footer-md-height: 100px;
+@footer-xs-height: 144px;
+
+._sticky--wrapper {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -@footer-md-height;
+
+	&:after {
+  	content: "";
+  	display: block;
+	}
+}
+
+._sticky--wrapper::after{
+  height: @footer-md-height;
+}
+
+.g-xs{
+	._sticky--wrapper {
+		margin-bottom: -@footer-xs-height;
+	}
+	._sticky--wrapper:after{
+		height: @footer-xs-height;
+	}
+}
