@@ -1,7 +1,7 @@
 'use strict';
 var App = angular.module('pecApp',['ngRoute', 'ngSanitize', 'ngCookies'], function($routeProvider, $compileProvider){
 	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|callto):/);
-	
+
 	for(var pageName in pec.routes){
     	var route = pec.routes[pageName],
 			tpl = route.tpl,
@@ -16,6 +16,7 @@ var App = angular.module('pecApp',['ngRoute', 'ngSanitize', 'ngCookies'], functi
 			$routeProvider.when("/" + pagen, {
 				templateUrl: templateUrl,
 				controller: pec.getController(route),
+				resolve : route.resolve,
 				pageName: page
 			});
 		});

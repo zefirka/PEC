@@ -4,22 +4,6 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
 
   $scope.templateIsChosen = _.is.exist(defTpl) ? true : false;
 
-  /* Loading all templates */
-  if(pec.cache.get('templates')){
-      templates.getTemplates.call($scope, pec.cache.get('templates'));
-  }else{
-    templates
-      .loadTemplates()
-      .then(templates.getTemplates.bind($scope))
-      .then(function(){
-        pec.cache('templates', $scope.templates);
-      });
-  }
-
-  // $scope.createTemplateWrapper = function () {
-  //   templates.createWrapper($scope.template);
-  // }
-
   $scope.chooseTpl = function (tpl, popup) {
     $scope.templateIsChosen = true;
     templates.chooseTemplate(tpl).then(function(response){
@@ -83,4 +67,10 @@ pec.controllers.mainCtrl = ['$scope', 'templates', function($scope, templates) {
   /* Editing template */
   $scope.message = "Добавить новую переменную";
   $scope.heading = "Переменные";
+
+  /* INITIALIZING */
+  /* Loading and caching templates */
+  templates.cache(function(tpls){
+    templates.getTemplates.bind($scope)(tpls);
+  })
 }];

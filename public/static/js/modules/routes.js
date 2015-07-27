@@ -11,8 +11,32 @@ pec.routes = {
 		controller : 'mainCtrl',
 	},
 
-	constructor: {
-		route: ['dashboard/email'],
+	'dashboard/templates/new': {
+		route: ['dashboard/templates/new'],
+		tpl: 'dashboard/edit.tpl',
+		controller : 'editTemplate',
+	},
+
+	'dashboard/templates/edit/:id': {
+		route: ['dashboard/templates/edit/:id'],
+		tpl: 'dashboard/edit.tpl',
+		controller : 'editTemplate',
+	},
+
+	'dashboard/templates/delete/:id': {
+		route: ['dashboard/templates/delete/:id'],
+		tpl: 'dashboard/delete.tpl',
+		controller : 'deleteTemplate',
+	},
+
+	'dashboard/templates': {
+		route: ['dashboard/templates'],
+		tpl: 'dashboard/templates.tpl',
+		controller : 'templatesList'
+	},
+
+	'dashboard/constructor': {
+		route: ['dashboard/constructor'],
 		tpl: 'dashboard/constructor.tpl'
 	},
 

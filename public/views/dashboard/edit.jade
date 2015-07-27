@@ -1,0 +1,54 @@
+ngpopup
+.container
+	.row
+		.col-md-12.col-lg-12.col-sm-12.col-xs-12
+			h3 {{isNew ? '#{lang.create_new_template}' : '#{lang.edit_template}'}}
+
+			form.b-form.b-form--template(action="templates")
+				fieldset
+						legend.b-form--legend Шаблон письма
+						
+						.control-group
+							label.control-label Название
+							.controls
+								input.form-control(type="text", 
+																	pattern="[A-Za-z][A-Za-z0-9]+", 
+																	ng-model="tpl.name"
+																	value="{{tpl.name}}")
+								p {{tpl.name}}
+								p.help-block Дайте название, помните о том, что файл обертки должен лежать в директории files/templates/<название>/wrapper.html
+						
+						.control-group
+							label.control-label Движок шаблонов
+							.controls
+								label.radio.inline
+									input(type="radio", ng-model="tpl.templates", value="html", ng-checked="tpl.templates == 'html'")
+									span HTML
+								label.radio.inline
+									input(type="radio", ng-model="tpl.templates", value="jade", ng-checked="tpl.templates == 'jade'")
+									span Jade
+					
+								p.help-block Выберите формат шаблонов
+						
+						.control-group
+							label.control-label Файл обертки
+							.controls
+								input#wrapper.g-hidden(type="file", pec-upload, ng-model="model.file")
+								a.b-button.b-button--primary(pec-trigger="click:wrapper") Выберите файл
+								span.g-outspace--10 или
+								a.b-button.b-button--primary(ng-click="toggleEditor()") Создайте разметку
+
+			section.b-form--subform
+				pec-form(fields="tpl.variables")
+
+			section.b-form--errors(ng-if="errors.length > 0")
+				h4 Найдены следующие ошибки
+				ul
+					li(ng-repeat="error in errors") Поле - {{error.field}}, ошибка: "{{error.message}}"
+
+			div.b-form--about-link
+				a(href="about/api-reference") О правилах связывания переменных
+			
+			div.b-form--buttons
+				a.b-button.b-button--ok.ok(ng-click="save()" class="b-button btn-primary") Создать
+				a.b-button.b-button--cancle.cancle(href="#dashboard") Отмена

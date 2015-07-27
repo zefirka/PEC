@@ -18,6 +18,34 @@ pec.directives.pecBlocks = function () {
 //= include directives/preloader.js
 
 
+
+pec.directives.pecTrigger = function(){
+  return function(){
+    return {
+      scope: false,
+      restrict: 'A',
+      link: function(scope, element, attr){
+        var sp = attr.pecTrigger.split(':');
+
+        if(sp.length > 2){
+          console.error("ERROR: pec-trigger value error. Allowed: pec-trigger=\"eventname:xpath\"");
+        }
+
+        var evt = sp[0],
+            id = sp[1];
+
+        $(element).on(evt, function(event){
+          var elem = document.getElementById(id),
+              newEvent = document.createEvent("MouseEvents");
+
+          newEvent.initEvent(evt, true, false);
+          elem.dispatchEvent(newEvent);
+        });
+      }
+    }
+  }
+}
+
 pec.directives.swipeMenu = function(){
   return function(){
     return {
@@ -71,70 +99,16 @@ pec.directives.swipeMenu = function(){
   }
 }
 
-pec.directives.pecForm = function(){
-  return function(){
-    return {
-      restrict: 'E',
-      transclude: true,
-      link: function(scope, element, attr){
-        var id = 0,
-            optid = 0;
+/*
+ *  Directive: <pec-form>
+ *  Restrict: Element
+ *  Usage: {
+ *    @block: templates/edit
+ *    @position: main
+ *  }
+ */
 
-        var $parse = pec.inject("$parse");
-
-
-        scope.fields = $parse(attr.fields)(scope);
-        scope.$watch("template", function(n,o){
-          if(n){
-              scope.fields = $parse(attr.fields)(scope);
-          }
-        });
-
-        scope.newField = function(){
-          this.addingNewField = true;
-          this.newFieldType = "text";
-        }
-
-        scope.removeField = function (field) {
-          scope.fields = scope.fields.filter(function (f) {
-            return f.id !== field.id;
-          })
-        }
-
-        scope.collapseAddition = function(){
-          this.addingNewField = false;
-          this.newFieldType = "text";
-        }
-
-        scope.addNewField = function () {
-          this.fields.push({
-            id : id++,
-            type: this.newFieldType,
-            options : []
-          });
-        }
-
-        scope.addOption = function(field) {
-          field.options.push({
-            id: optid++,
-            value: "",
-            name: ""
-          });
-        }
-
-        scope.removeOption = function (field, option) {
-          debugger;
-          field.options = field.options.filter(function(o){
-            return o.id !== option.id;
-          });
-        }
-
-      },
-      templateUrl: 'views/directives/form.tpl'
-    }
-  }
-}
-
+//= include directives/pecForm.js
 
 pec.directives.ngForm = function(){
   return function(){

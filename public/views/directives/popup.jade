@@ -3,6 +3,6 @@
   .container
     div.i-area(ng-include="contentUrl")
     
-    div(ng-hide="!innerButtons")
-      a(ng-click="onSave()" class="btn btn-primary") Ок
-      a(ng-click="onCancle()" class="btn btn-danger") Закрыть
+    div.b-form--buttons(ng-hide="!innerButtons")
+      a.ok.b-button.b-button--success(ng-click="onSave()") Ок
+      a.b-button.b-button--danger(ng-click="onCancle()" class="btn btn-danger") Закрыть

@@ -36,8 +36,32 @@ pec.routes = {
 		controller : 'mainCtrl',
 	},
 
-	constructor: {
-		route: ['dashboard/email'],
+	'dashboard/templates/new': {
+		route: ['dashboard/templates/new'],
+		tpl: 'dashboard/edit.tpl',
+		controller : 'editTemplate',
+	},
+
+	'dashboard/templates/edit/:id': {
+		route: ['dashboard/templates/edit/:id'],
+		tpl: 'dashboard/edit.tpl',
+		controller : 'editTemplate',
+	},
+
+	'dashboard/templates/delete/:id': {
+		route: ['dashboard/templates/delete/:id'],
+		tpl: 'dashboard/delete.tpl',
+		controller : 'deleteTemplate',
+	},
+
+	'dashboard/templates': {
+		route: ['dashboard/templates'],
+		tpl: 'dashboard/templates.tpl',
+		controller : 'templatesList'
+	},
+
+	'dashboard/constructor': {
+		route: ['dashboard/constructor'],
 		tpl: 'dashboard/constructor.tpl'
 	},
 
@@ -48,8 +72,29 @@ pec.routes = {
 	}
 }
 
+	/**
+		#guiid
+	
+		Domain: Utils
+		Name: guiid
+		Description: generates unique id
+		Signature: {  -> string }
+	*/
 	function guiid(){
 		return [0,0,0,0].map(function(){ return (Math.random()*1000)>>0}).join('-');
+	}
+	
+	
+	/**
+		Domain: Utils
+		Name: match
+		Description: finds from [arr] first item where [param] of item equals to [value]
+		Signature: { array: arr, string: param, mixed : value -> mixed : result
+	*/
+	function match(arr, param, value){
+		return arr.filter(function(item){
+			return item[param] == value;
+		})[0];
 	}
 	
 	function typeCount(type, arr){
@@ -57,6 +102,8 @@ pec.routes = {
 			return f.type == type;
 		}).length
 	}
+	
+	
 	
 	function clone(obj) {
 	    if (null == obj || "object" != typeof obj) return obj;
@@ -236,16 +283,17 @@ pec.routes = {
 	  }
 	});
 	
+	var tplMock = {
+		name: '',
+		templates: '',
+		variables : []
+	}
+	
+	
+	
 	/* Index page ctrl */
 	pec.controllers.indexCtrl = ['templates', '$scope',  function(templates, $scope){
-		if(!pec.cache.get('templatesLoaded')){
-			pec.inject('$timeout')(function(){
-				templates.loadTemplates(true).then(function(tpls){
-					pec.cache('templates', tpls);
-					pec.cache('templatesLoaded', true);
-				});
-			}, 1000);
-		}
+		templates.cache();
 		$scope.test = "ALLHU AKBAR"
 	}];
 	
@@ -256,22 +304,6 @@ pec.routes = {
 	      defTpl = $cookie.get('template');
 	
 	  $scope.templateIsChosen = _.is.exist(defTpl) ? true : false;
-	
-	  /* Loading all templates */
-	  if(pec.cache.get('templates')){
-	      templates.getTemplates.call($scope, pec.cache.get('templates'));
-	  }else{
-	    templates
-	      .loadTemplates()
-	      .then(templates.getTemplates.bind($scope))
-	      .then(function(){
-	        pec.cache('templates', $scope.templates);
-	      });
-	  }
-	
-	  // $scope.createTemplateWrapper = function () {
-	  //   templates.createWrapper($scope.template);
-	  // }
 	
 	  $scope.chooseTpl = function (tpl, popup) {
 	    $scope.templateIsChosen = true;
@@ -336,72 +368,70 @@ pec.routes = {
 	  /* Editing template */
 	  $scope.message = "Добавить новую переменную";
 	  $scope.heading = "Переменные";
+	
+	  /* INITIALIZING */
+	  /* Loading and caching templates */
+	  templates.cache(function(tpls){
+	    templates.getTemplates.bind($scope)(tpls);
+	  })
 	}];
 	
 	
 	/* Edit template controller */
-	pec.controllers.editTemplateCtrl = ['$scope', 'templates', function($scope,  templates) {
-	  var isNew = $scope.isNewTpl == true;
+	//= include controllers/editTemplateCtrl.js
 	
-	  $scope.errors = [];
+	/* Edti constructor controller */
+	//= include controlles/editCtrl.js
 	
-	  $scope.tpl = {
-	    id : isNew ? parseInt($scope.templates.reduce(maxId).id) + 1 : parseInt($scope.template.id),
-	    name: isNew ? "" : $scope.template.name,
-	    templates: isNew ? "html" : ($scope.template.templates || "html"),
-	    variables: [],
-			wrapper: null,
-	  }
 	
-	  if(!isNew && $scope.template.variables && $scope.template.variables.length){
-	    $scope.tpl.variables = $scope.template.variables.map(JSON2Fields);
-	  }else{
-	    $scope.tpl.variables = [];
-	  }
+	/**
+		#edit-template
+		Domain: NG.Controllers.Controller {as <controller>}
+		Name: editTemplate
+		Description: template editing controller
+		Dependecies: $scope, NG.Factories.Factory.templates
+	*/
+	pec.controllers.editTemplate = ['$scope', 'templates', function($scope, templates){
+		var id = pec.inject('$routeParams').id;
 	
-	  if(!isNew){
-	    var cachedName = $scope.template.name;
-	  }
+		$scope.isNew = id ? false : true;
+		$scope.tpl = tplMock;
+		$scope.errors = [];
 	
-	  $scope.onSave = function(){
-	    $scope.tpl.modified = new Date().getTime();
 	
-	    var errors = templates.validate($scope.tpl, $scope);
+		templates.cache(function(result){
+			$scope.templates = result
+			$scope.tpl = id ? match($scope.templates, 'id', id) : tplMock;
+		});
 	
-	    if(!errors.length){
-	      if(isNew){
+		$scope.save = function(){
+			debugger;
+		}
+	
+	
+		$scope.toggleEditor = function(){
+			debugger;
+			$scope.innerButtons = true;
+			pec.events.emit('popup:open', {
+				url: 'views/popups/editor.tpl',
+				onSave : function(scope, next){
 					debugger;
-	        templates
-	          .saveTemplate($scope.tpl)
-	          .then(templates.getTemplates.bind($scope))
-	          .then(function(){
-	            pec.events.emit('popup:close')
-	          })
-	      }else{
-	        templates
-	          .updateTemplate($scope, cachedName)
-	          .then(function(tpls){
-	            return templates.getTemplates.bind($scope)(tpls, $scope.tpl.name);
-	          })
-	          .then(function(){
-	            pec.events.emit('popup:close')
-	          })
-	      }
-	    }else{
-	      $scope.errors = errors;
-	    }
-	  }
-	
-	  $scope.onCancle = function(){
-	    $scope.isNewTpl = false;
-	    pec.events.emit('popup:close');
-	  }
+				}
+			})
+		}
 	
 	}];
 	
 	
-	/* Edti constructor controller */
-	//= include controlles/editCtrl.js
+	pec.controllers.templatesList = ['$scope', 'templates', function($scope, templates){
+		templates.cache(function(result){
+			$scope.templates = result
+		}, true);
+	
+		$scope.chooseTpl = function(tpl){
+			debugger;
+		}
+	}];
 	
 	pec.directives.ngpopup = function(){
 	  function by(prop, val){
@@ -607,6 +637,34 @@ pec.routes = {
 	
 	
 	
+	
+	pec.directives.pecTrigger = function(){
+	  return function(){
+	    return {
+	      scope: false,
+	      restrict: 'A',
+	      link: function(scope, element, attr){
+	        var sp = attr.pecTrigger.split(':');
+	
+	        if(sp.length > 2){
+	          console.error("ERROR: pec-trigger value error. Allowed: pec-trigger=\"eventname:xpath\"");
+	        }
+	
+	        var evt = sp[0],
+	            id = sp[1];
+	
+	        $(element).on(evt, function(event){
+	          var elem = document.getElementById(id),
+	              newEvent = document.createEvent("MouseEvents");
+	
+	          newEvent.initEvent(evt, true, false);
+	          elem.dispatchEvent(newEvent);
+	        });
+	      }
+	    }
+	  }
+	}
+	
 	pec.directives.swipeMenu = function(){
 	  return function(){
 	    return {
@@ -660,22 +718,42 @@ pec.routes = {
 	  }
 	}
 	
+	/*
+	 *  Directive: <pec-form>
+	 *  Restrict: Element
+	 *  Usage: {
+	 *    @block: templates/edit
+	 *    @position: main
+	 *  }
+	 */
+	/**
+	  #pec-form
+	
+	  Domain: NG.Directives.Directive
+	  Name: pecForm
+	  Description: {}
+	  Dependecies : []
+	  
+	*/
+	
 	pec.directives.pecForm = function(){
 	  return function(){
 	    return {
 	      restrict: 'E',
 	      transclude: true,
 	      link: function(scope, element, attr){
+	        var $form = $(element);
+	
 	        var id = 0,
 	            optid = 0;
 	
 	        var $parse = pec.inject("$parse");
 	
-	
 	        scope.fields = $parse(attr.fields)(scope);
-	        scope.$watch("template", function(n,o){
+	
+	        scope.$watch("tpl", function(n,o){
 	          if(n){
-	              scope.fields = $parse(attr.fields)(scope);
+	            scope.fields = $parse(attr.fields)(scope).map(JSON2Fields);
 	          }
 	        });
 	
@@ -688,6 +766,10 @@ pec.routes = {
 	          scope.fields = scope.fields.filter(function (f) {
 	            return f.id !== field.id;
 	          })
+	        }
+	
+	        scope.chooseFile = function(){
+	          $form.find('input[type="file"]').click();
 	        }
 	
 	        scope.collapseAddition = function(){
@@ -863,6 +945,10 @@ pec.routes = {
 	}
 	
 	
+	/**
+	
+	*/
+	
 	pec.filters.link = function(){
 		return function(){
 	        return function(link){
@@ -887,44 +973,130 @@ pec.routes = {
 	    }
 	}
 	
+	/**
+	  #factories
+	
+	  Domain: NG.Factories
+	  Description: contains all factories of [NG](#ng)
+	*/
 	pec.factories = {};
+	
+	/* Validator factory module */
+	/**
+		#validator
+	
+		Domain: Factory
+		Description: Validator service
+	*/
+	
+	pec.factories.validator = function(){
+	
+	
+		function validateName(name){
+			var allowedRX = /[A-Za-z_][_\-A-Za-z0-9\.]+/,
+					decSymbolsRX = /([ \#\$\%\^\&\*\(\)\+\=\@\!\\\/\;\:\,\`])/g;
+	
+			var res = "";
+	
+			if(!allowedRX.test(name)){
+				res += "Недопустимое имя: ";
+	
+				name.match(decSymbolsRX).forEach(function(symbol){
+					if(symbol == " "){
+						res+= "пробелы не разрешены, ";
+					}else{
+						res+= "символ " + symbol + " не разрешен, ";
+					}
+				});
+	
+				res.slice(-2);
+			}
+	
+			return res;
+		}
+	
+	
+		function validate(data){
+	    var tpl = data.tpl,
+					templates = data.templates;
+	
+			var errs = [];
+	
+			var nameValidation = validateName(tpl.name);
+	
+	    if(nameValidation){
+	      errs.push({
+	        field: "Название шаблона",
+	        message: nameValidation
+	      });
+	    }
+	
+	    var tplWithSameName = match(templates, 'name', tpl.name);
+	
+			if(
+				(tplWithSameName && data.isNewTpl) ||
+				(tplWithSameName && tplWithSameName.id !== tpl.id)){
+	
+				errs.push({
+	        field: "Название шаблона",
+	        message: "Имя " + tpl.name + " уже знаято"
+	      });
+	    }
+	
+	    return errs;
+	  }
+	
+	  return function(){
+	
+	    return {
+	      template: function(data){
+					return validate(data);
+	      }
+	    }
+	  }
+	}
+	
+	
+	/* Templates factory module */
+	/**
+	  Domain: NG.Factories.Factory
+	  Name: templates
+	  Description: service provides API to work with templates
+	*/
 	
 	pec.factories.templates = function(){
 	  var API = "/templates?";
 	
-	  return function () {
-	    var model = {},
-	        nid;
+	  return function() {
+	    var Validator = pec.inject('validator');
+	    var model = {};
+	
 	
 	    function saveModel(response){
 	      return model = response.data || response;
 	    }
 	
-	    function validate(tpl, scope){
-	      var errs = [];
-	
-	      if(!/[A-Za-z][A-Za-z0-9]+/.test(tpl.name)){
-	        errs.push({
-	          field: "Название шаблона",
-	          message: "Недопустимое имя"
-	        });
-	      }
-	
-	      var tplWithSameName = scope.templates.filter(function(t){ return t.name == tpl.name; })[0];
-	      if((tplWithSameName && scope.isNewTpl) || (tplWithSameName && tplWithSameName.id !== tpl.id)){
-	        errs.push({
-	          field: "Название шаблона",
-	          message: "Имя " + tpl.name + " уже знаято"
-	        });
-	      }
-	
-	      return errs;
-	    }
-	
-	
 	    return {
-	      validate: validate,
+	      /***
+	        Domain: NG.Factories.Factory.Method
+	        Name: validate
+	        Description: validates template
+	        Signature: {object} -> {array}
+	      */
+	      validate: function(data){
+	        return Validator.template(data);
+	      },
 	
+	      /**
+	        Domain: Factory.Method
+	        Name: loadTemplates
+	        Description: loads templates from server
+	        Signature: {boolean : sielent} -> {promise}
+	
+	        Usage: {
+	          sielent : if [true] then request will not trigger [ajax loading-box](#ajax-loading-box)
+	        }
+	      */
 	      loadTemplates: function(sielent) {
 	        return pec.http.post(API, {
 	          params: {
@@ -934,17 +1106,54 @@ pec.routes = {
 	        }).then(saveModel);
 	      },
 	
-	      // createWrapper: function (tpl) {
-	      //   return pec.http.post("/api?", {
-	      //     action: 'createTemplateWrapper',
-	      //     domain: 'templates',
-	      //     template: tpl
-	      //   }).then(function (e) {
-	      //     debugger;
-	      //     pec.events.emit('email:change', e);
-	      //   })
-	      // },
+	      /**
+	        #templates.cache
 	
+	        Domain: Factory.Method
+	        name: cache
+	        Description: caches templates or return cached if they have been already cached.
+	        Signature: {function : fn, boolean : preloading }  -> {array}
+	
+	        Usage: {
+	          fn : callback which will be called when method will recieve templates,
+	          preloading : if [true] then request will trigger [ajax loading-box](#ajax-loading-box)
+	        }
+	      */
+	      cache : function(fn, preloading){
+	        var self = this,
+	            $timeout = pec.inject('$timeout'),
+	            templates = pec.cache.get('templatesLoaded') ? pec.cache.get('templates') : false;
+	
+	        if(!templates){
+	
+	          if(preloading){
+	              pec.api.emit('before:load');
+	          }
+	
+	          $timeout(function(){
+	            self.loadTemplates(true).then(function(tpls){
+	              pec.cache('templates', tpls);
+	              pec.cache('templatesLoaded', true);
+	              fn && fn(tpls);
+	            });
+	
+	          }, 1000);
+	        }else{
+	          fn && fn(templates);
+	        }
+	
+	        return templates;
+	      },
+	
+	
+	      /**
+	        #templates.getTemplates
+	
+	        Domain: NG.Factories.Factory.Method
+	        name: getTemplates
+	        Description: binds templates to the scope
+	        Signature: {array : templates, boolean : updated }  -> {array : templates
+	      */
 	      getTemplates: function(templates, updated) {
 	        var defTpl = pec.inject("$cookieStore").get('template'),
 	            chosen = null,
@@ -955,14 +1164,12 @@ pec.routes = {
 	
 	          if($scope.templateIsChosen){
 	
-	            chosen = _.filter(templates, function(tpl){
-	              return tpl.name == (updated || defTpl);
-	            })[0];
+	            chosen = match(templates, 'name', updated || defTpl);
 	
 	            if(chosen){
 	              $scope.templateIsChosen = true;
 	              $scope.template = chosen;
-	              $scope.chooseTpl(chosen, true);
+	              $scope.chooseTpl && $scope.chooseTpl(chosen, true);
 	            }
 	            $scope.templateUrl = "/files/" + $scope.template.name + "/wrapper.tpl";
 	          }
@@ -1021,6 +1228,7 @@ pec.routes = {
 	    };
 	  };
 	};
+	
 	
 	pec.transforms.file = function(data){
 	  var formData = new FormData();

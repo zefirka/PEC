@@ -1,28 +1,29 @@
 ngpopup
 section.b-templates
   .container
+    
     .row
       .col-md-12.col-lg-12.col-sm-12.col-xs-12
         h2!=lang.template
+        
     .row
       .col-md-8.col-lg-9.col-sm-6.col-xs-12.col-height
         div(ng-show="templateIsChosen")
           p #{lang.choosen_template} 
             strong {{template.name}}
-          p Last modified : {{template.modified | date}}
+          p #{lang.changed} : {{template.modified | date}}
+        
         div(ng-show="!templateIsChosen")
           p #{lang.choose_template}
-          include ./blocks/templates.jade
+          //- {
+          //-   Block: list
+          //-   Modifier : templates
+          //- }      
+          section(ng-hide="templateIsChosen")    
+            include ./blocks/b-list--templates.jade
       .col-md-4.col-lg-3.col-sm-6.col-xs-12
-        nav.b-nav.b-nav--templates
-          ul.b-nav-list.js-list
-            li(ng-click="editTemplate(true)") 
-              a.b-button.b-button--new!=lang.new_template
-            li
-              a.b-button.b-button--primary(href="#dashboard/email")!=lang.build_email || "Собрать письмо"
-            li(ng-click="changeTemplate()") 
-              a.b-button.b-button--change!=lang.change
-            li(ng-click="editTemplate(false)") 
-              a.b-button.b-button--edit!=lang.edit
-            li(ng-click="deleteTemplate()") 
-              a.b-button.b-button--remove!=lang.delete    
+        //- { 
+        //-   Block : nav 
+        //-   Modifier : templates
+        //- }
+        include ./blocks/b-nav--templates.jade

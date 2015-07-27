@@ -1,7 +1,7 @@
 {
   "name": "PEC",
   "version": "0.3.1",
-  "description": "Pudra Newsletter Constructor",
+  "description": "Power Email Constructor",
   "main": "index.html",
   "scripts": {
     "run": "node node/app.js"

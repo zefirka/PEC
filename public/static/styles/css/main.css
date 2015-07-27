@@ -2,6 +2,18 @@
 .g-wrapper .container {
   background-color: rgba(255, 255, 255, 0.92);
 }
+.g-hidden {
+  display: none !important;
+}
+.g-outspace--10 {
+  margin: 0 10px;
+}
+.g-outspace--15 {
+  margin: 0 15px;
+}
+.g-outspace--20 {
+  margin: 0 20px;
+}
 .overlap-manager {
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
@@ -95,6 +107,7 @@
 }
 .b-form--buttons {
   margin-top: 10px;
+  height: 40px;
 }
 .b-form--buttons .ok {
   margin-right: 15px;
@@ -298,6 +311,12 @@
 .b-button--primary:hover {
   background: #0e4471;
 }
+.b-button--danger {
+  background: #B42A2A;
+}
+.b-button--danger:hover {
+  background: #8b2020;
+}
 .b-button--add_btn {
   background: #9f133f;
   padding: 5px;
@@ -309,6 +328,15 @@
 }
 .b-button--change:hover {
   background: #a88f3a;
+}
+.b-button--new {
+  background: #d55809;
+}
+.b-button--new:hover {
+  background: #a44407;
+}
+.b-button--small {
+  padding: 5px 10px;
 }
 .b-editor-table thead th {
   padding-bottom: 10px;

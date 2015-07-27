@@ -1,4 +1,5 @@
 pec.controllers.editCtrl = function($scope){
+  debugger;
   var $interval = pec.inject('$interval'),
       $http = pec.inject('$http'),
       timer;

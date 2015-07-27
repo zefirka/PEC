@@ -1,8 +1,8 @@
 h3 {{heading}}
 div(ng-show="fields.length == 0")
   p.help-info-block У письма нет переменных
-div.b-form--buttons
-  span.b-button.btn.btn-primary(ng-hide="addingNewField", ng-click="newField()") Добавить
+div.b-form--buttons(ng-hide="addingNewField")
+  span.b-button.btn.btn-primary(ng-click="newField()") Добавить
   
 div.select(ng-show="addingNewField")
   form.b-form.form-horizontal
@@ -17,8 +17,8 @@ div.select(ng-show="addingNewField")
         option(value="radio") Radio
     
     div.b-form--buttons
-      span.ok.btn.btn-primary(ng-click="addNewField()") Добавить
-      span.cancle.btn.btn-danger(ng-click="collapseAddition()") Отмена
+      span.ok.b-button.b-button--primary.b-button--small(ng-click="addNewField()") Добавить
+      span.cancle.b-button.b-button--danger.b-button--small(ng-click="collapseAddition()") Отмена
 
 form.b-form--custom-form.b-form(ng-show="fields.length > 0")
   div.b-control--row(ng-repeat="field in fields")

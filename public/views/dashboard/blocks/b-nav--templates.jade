@@ -1,0 +1,16 @@
+nav.b-nav.b-nav--templates
+	ul.b-nav-list.js-list
+		li
+			a.b-button.b-button--new(href="#dashboard/templates/new")!=lang.new_template
+		
+		li(ng-if="templateIsChosen == true")
+			a.b-button.b-button--primary(href="#dashboard/constructor")!=lang.build_email
+		
+		li
+			a.b-button.b-button--change(href="#dashboard/templates")!=lang.change
+		
+		li
+			a.b-button.b-button--edit(ng-href="#dashboard/templates/edit/{{template.id}}")!=lang.edit
+		
+		li(ng-if="templateIsChosen == true", ng-click="deleteTemplate(template)") 
+			a.b-button.b-button--remove!=lang.delete

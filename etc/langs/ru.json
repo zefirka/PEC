@@ -16,6 +16,10 @@
 		"delete" : "Удалить",
 		"choose_template" : "Выберите шаблон",
 		"choosen_template" : "Выбран шаблон",
-		"changed" : "Изменен"
+		"last_modified" : "Изменен",
+		"changed" : "Изменен",
+		"build_email" : "Собрать письмо",
+		"create_new_template" : "Создать новый шаблон",
+		"edit_template" : "Редактировать шаблон"
 	}
 }

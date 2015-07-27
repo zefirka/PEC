@@ -1,5 +1,26 @@
+/**
+	#guiid
+
+	Domain: Utils
+	Name: guiid
+	Description: generates unique id
+	Signature: {  -> string }
+*/
 function guiid(){
 	return [0,0,0,0].map(function(){ return (Math.random()*1000)>>0}).join('-');
+}
+
+
+/**
+	Domain: Utils
+	Name: match
+	Description: finds from [arr] first item where [param] of item equals to [value]
+	Signature: { array: arr, string: param, mixed : value -> mixed : result
+*/
+function match(arr, param, value){
+	return arr.filter(function(item){
+		return item[param] == value;
+	})[0];
 }
 
 function typeCount(type, arr){
@@ -7,6 +28,8 @@ function typeCount(type, arr){
 		return f.type == type;
 	}).length
 }
+
+
 
 function clone(obj) {
     if (null == obj || "object" != typeof obj) return obj;
